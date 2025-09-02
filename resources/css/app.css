@@ -1,0 +1,152 @@
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+/* @custom-variant dark (&:is(.dark *)); */
+
+@theme {
+    --font-sans:
+        'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+:root {
+    --background: #F9FAFB; /* Light gray */
+    --foreground: #1F2937; /* Dark gray */
+    --card: #FFFFFF; /* White */
+    --card-foreground: #1F2937; /* Dark gray */
+    --popover: #FFFFFF; /* White */
+    --popover-foreground: #1F2937; /* Dark gray */
+    --primary: oklch(0.6 0.118 184.704); /* Blue */
+    --primary-foreground: #FFFFFF; /* White */
+    --secondary: #6B7280; /* Gray */
+    --secondary-foreground: #FFFFFF; /* White */
+    --muted: #D1D5DB; /* Light gray */
+    --muted-foreground: #1F2937; /* Dark gray */
+    --accent: #FBBF24; /* Amber */
+    --accent-foreground: #1F2937; /* Dark gray */
+    --destructive: #EF4444; /* Red */
+    --destructive-foreground: #FFFFFF; /* White */
+    --border: #E5E7EB; /* Light gray */
+    --input: #F3F4F6; /* Light gray */
+    --ring: #60A5FA; /* Light blue */
+    --chart-1: #4F46E5; /* Indigo */
+    --chart-2: #F43F5E; /* Pink */
+    --chart-3: #FBBF24; /* Amber */
+    --chart-4: #34D399; /* Green */
+    --chart-5: #3B82F6; /* Blue */
+    --radius: 0.625rem;
+    --sidebar: #FFFFFF; /* White */
+    --sidebar-foreground: #1F2937; /* Dark gray */
+    --sidebar-primary: #3B82F6; /* Blue */
+    --sidebar-primary-foreground: #FFFFFF; /* White */
+    --sidebar-accent: #FBBF24; /* Amber */
+    --sidebar-accent-foreground: #1F2937; /* Dark gray */
+    --sidebar-border: #E5E7EB; /* Light gray */
+    --sidebar-ring: #60A5FA; /* Light blue */
+}
+
+.dark {
+    --background: #1F2937; /* Dark gray */
+    --foreground: #F9FAFB; /* Light gray */
+    --card: #1F2937; /* Dark gray */
+    --card-foreground: #F9FAFB; /* Light gray */
+    --popover: #1F2937; /* Dark gray */
+    --popover-foreground: #F9FAFB; /* Light gray */
+    --primary: oklch(0.6 0.118 184.704); /* Blue */
+    --primary-foreground: #FFFFFF; /* White */
+    --secondary: #9CA3AF; /* Gray */
+    --secondary-foreground: #F9FAFB; /* Light gray */
+    --muted: #9CA3AF; /* Gray */
+    --muted-foreground: #F3F4F6; /* Light gray */
+    --accent: #FBBF24; /* Amber */
+    --accent-foreground: #1F2937; /* Dark gray */
+    --destructive: #EF4444; /* Red */
+    --destructive-foreground: #FFFFFF; /* White */
+    --border: #4B5563; /* Dark gray */
+    --input: #4B5563; /* Dark gray */
+    --ring: #3B82F6; /* Blue */
+    --chart-1: #4F46E5; /* Indigo */
+    --chart-2: #F43F5E; /* Pink */
+    --chart-3: #FBBF24; /* Amber */
+    --chart-4: #34D399; /* Green */
+    --chart-5: #3B82F6; /* Blue */
+    --sidebar: #1F2937; /* Dark gray */
+    --sidebar-foreground: #F9FAFB; /* Light gray */
+    --sidebar-primary: #3B82F6; /* Blue */
+    --sidebar-primary-foreground: #F9FAFB; /* Light gray */
+    --sidebar-accent: #FBBF24; /* Amber */
+    --sidebar-accent-foreground: #F9FAFB; /* Light gray */
+    --sidebar-border: #4B5563; /* Dark gray */
+    --sidebar-ring: #3B82F6; /* Blue */
+}
+
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
