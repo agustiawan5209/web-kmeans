@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama', 50)->unique();
             $table->text('keterangan');
-            $table->json('attribut');
+            $table->json('attribut')->nullable();
             $table->timestamps();
         });
     }

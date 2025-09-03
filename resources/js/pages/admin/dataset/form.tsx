@@ -22,7 +22,7 @@ export default function FormMakananView({
             {/* Informasi Dasar */}
             {/* Informasi Dasar */}
 
-            {/* Parameter Lingkungan */}
+            {/* Parameter Nutrisi Rekomendasi Makanan */}
             <Card>
                 <CardContent>
                     <CardHeader>

@@ -48,11 +48,10 @@ interface PropsMakananRumputLaut {
 }
 
 export default function FormMakanan({ parameter, indikator, handleChange }: PropsMakananRumputLaut) {
-
     return (
         <>
             <div className="block">
-                {/* Parameter Lingkungan */}
+                {/* Parameter Nutrisi Rekomendasi Makanan */}
                 {indikator.length > 0 && (
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         {indikator.map((item: { nama: string; id: number }, index: number) => {

@@ -26,14 +26,4 @@ export async function savePredictionToDB(
     }
 }
 
-export async function loadPredictionFromDB(modelName: string): Promise<{ prediction: string | number; mse: string | number; rsquared: string | number }> {
-    try {
-        // 1. Fetch model data from Laravel backend
-        const response = await axios.get(route('prediction.show', { modelName: modelName }));
-        const { prediction, mse, rsquared } = response.data;
-        return { prediction, mse, rsquared };
-    } catch (error) {
-        console.error('Error loading prediction:', error);
-        throw new Error(error instanceof Error ? error.message : 'Failed to load prediction');
-    }
-}
+

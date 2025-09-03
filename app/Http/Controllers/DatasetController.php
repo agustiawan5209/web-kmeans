@@ -32,11 +32,13 @@ class DatasetController extends Controller
      */
     public function index()
     {
-        $dataset = Dataset::orderBy('id','desc')->paginate(10);
+        $dataset = Dataset::orderBy('id', 'desc')->paginate(10);
+
         return Inertia::render("admin/dataset/index", [
             "dataset" => $dataset,
             'breadcrumb' => self::BASE_BREADCRUMB,
             'titlePage' => 'Dataset',
+            'indikator' => Indikator::all(),
         ]);
     }
 
@@ -66,7 +68,7 @@ class DatasetController extends Controller
             "kecamatan" => $request->kecamatan,
             "tahun" => $request->tahun,
             "total_dataset" => $request->total_dataset,
-           "jenisRumputLaut" =>  $request->jenisRumputLaut,
+            "jenisRumputLaut" =>  $request->jenisRumputLaut,
             "parameter" => $request->parameter,
             "keterangan" => "TEST",
         ];

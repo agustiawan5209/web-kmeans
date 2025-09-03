@@ -197,7 +197,7 @@ export default function IndikatorIndex({ indikator, breadcrumb, titlePage, can }
         }));
     };
 
-    const actionCan = ()  => {
+    const actionCan = () => {
         if (can.add || can.edit || can.delete) {
             return true;
         }
@@ -210,12 +210,14 @@ export default function IndikatorIndex({ indikator, breadcrumb, titlePage, can }
             <Card>
                 <div className="container mx-auto px-4">
                     <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                        <h2 className="text-lg font-bold md:text-xl">Parameter Prediksi Rumput Laut</h2>
-                        {can.add &&<div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-                            <Button variant={'default'} type="button" className="cursor-pointer" onClick={() => setIsOpenDialog(true)}>
-                                Tambah Data
-                            </Button>
-                        </div>}
+                        <h2 className="text-lg font-bold md:text-xl">Parameter Nutrisi Rekomendasi Makanan</h2>
+                        {can.add && (
+                            <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
+                                <Button variant={'default'} type="button" className="cursor-pointer" onClick={() => setIsOpenDialog(true)}>
+                                    Tambah Data
+                                </Button>
+                            </div>
+                        )}
                     </div>
                     <div className="overflow-x-auto rounded-md border">
                         <Table className="min-w-full">
@@ -234,27 +236,33 @@ export default function IndikatorIndex({ indikator, breadcrumb, titlePage, can }
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>{item.nama}</TableCell>
                                             <TableCell>{item.keterangan}</TableCell>
-                                        {actionCan()&&<TableCell>
-                                            <div className="flex flex-row items-center gap-2">
-                                                {can.edit && <Button
-                                                    type="button"
-                                                    variant={'default'}
-                                                    tooltip="edit"
-                                                    onClick={() => handleEdit(item.id)}
-                                                    className="border border-chart-4 bg-chart-4"
-                                                >
-                                                    {' '}
-                                                    <PenBox />{' '}
-                                                </Button>}
+                                            {actionCan() && (
+                                                <TableCell>
+                                                    <div className="flex flex-row items-center gap-2">
+                                                        {can.edit && (
+                                                            <Button
+                                                                type="button"
+                                                                variant={'default'}
+                                                                tooltip="edit"
+                                                                onClick={() => handleEdit(item.id)}
+                                                                className="border border-chart-4 bg-chart-4"
+                                                            >
+                                                                {' '}
+                                                                <PenBox />{' '}
+                                                            </Button>
+                                                        )}
 
-                                                {can.delete && <DeleteConfirmationForm
-                                                    title={`Hapus indikator ${item.id}`}
-                                                    id={item.id}
-                                                    url={route('admin.indikator.destroy', { indikator: item.id })}
-                                                    setOpenDialog={setisDeleteDialog}
-                                                />}
-                                            </div>
-                                        </TableCell>}
+                                                        {can.delete && (
+                                                            <DeleteConfirmationForm
+                                                                title={`Hapus indikator ${item.id}`}
+                                                                id={item.id}
+                                                                url={route('admin.indikator.destroy', { indikator: item.id })}
+                                                                setOpenDialog={setisDeleteDialog}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                </TableCell>
+                                            )}
                                         </TableRow>
                                     ))
                                 ) : (
@@ -290,7 +298,7 @@ export default function IndikatorIndex({ indikator, breadcrumb, titlePage, can }
                                     className="input"
                                     disabled={processing}
                                     placeholder="Masukkan nama indikator"
-                                    readOnly={(!can.add)}
+                                    readOnly={!can.add}
                                 />
                                 <InputError message={errors.nama} className="mt-2" />
                             </div>
@@ -310,76 +318,76 @@ export default function IndikatorIndex({ indikator, breadcrumb, titlePage, can }
                                 />
                                 <InputError message={errors.keterangan} className="mt-2" />
                             </div>
-                            {(can.add && can.edit && can.delete) && (
+                            {can.add && can.edit && can.delete && (
                                 <div className="block space-y-2">
-                                {data.attribut.map((item, index) => {
-                                    return (
-                                        <div className="flex items-center" key={index}>
-                                            <div className="">
-                                                <Label htmlFor={'batas.' + index} className="text-sm font-medium">
-                                                    Batas
-                                                </Label>
-                                                <Input
-                                                    type="text"
-                                                    name={'batas.' + index}
-                                                    value={data.attribut[index].batas}
-                                                    onChange={handleChange}
-                                                    id={'batas.' + index}
-                                                    className="input"
-                                                    disabled={processing}
-                                                    placeholder="Masukkan batas indikator"
-                                                />
+                                    {data.attribut.map((item, index) => {
+                                        return (
+                                            <div className="flex items-center" key={index}>
+                                                <div className="">
+                                                    <Label htmlFor={'batas.' + index} className="text-sm font-medium">
+                                                        Batas
+                                                    </Label>
+                                                    <Input
+                                                        type="text"
+                                                        name={'batas.' + index}
+                                                        value={data.attribut[index].batas}
+                                                        onChange={handleChange}
+                                                        id={'batas.' + index}
+                                                        className="input"
+                                                        disabled={processing}
+                                                        placeholder="Masukkan batas indikator"
+                                                    />
+                                                </div>
+                                                <div className="">
+                                                    <Label htmlFor={'operator.' + index} className="text-sm font-medium">
+                                                        Operator
+                                                    </Label>
+                                                    <Select
+                                                        value={data.attribut[index].operator || ''}
+                                                        required
+                                                        onValueChange={(value) => handleSelectChange(index.toLocaleString(), value)}
+                                                    >
+                                                        <SelectTrigger className="input-minimal">
+                                                            <SelectValue placeholder="Pilih" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {['<', '<=', '>'].map((oper: any, index) => (
+                                                                <SelectItem key={index} value={oper}>
+                                                                    {oper}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+                                                <div className="">
+                                                    <Label htmlFor={'nilai.' + index} className="text-sm font-medium">
+                                                        Nilai
+                                                    </Label>
+                                                    <Input
+                                                        type="text"
+                                                        name={'nilai.' + index}
+                                                        value={data.attribut[index].nilai}
+                                                        onChange={handleChange}
+                                                        id={'nilai.' + index}
+                                                        className="input"
+                                                        disabled={processing}
+                                                        placeholder="Masukkan nilai indikator"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <Button type="button" variant={'destructive'} size={'sm'} onClick={() => removeAttribut(index)}>
+                                                        {' '}
+                                                        <XIcon />
+                                                    </Button>
+                                                </div>
                                             </div>
-                                            <div className="">
-                                                <Label htmlFor={'operator.' + index} className="text-sm font-medium">
-                                                    Operator
-                                                </Label>
-                                                <Select
-                                                    value={data.attribut[index].operator || ''}
-                                                    required
-                                                    onValueChange={(value) => handleSelectChange(index.toLocaleString(), value)}
-                                                >
-                                                    <SelectTrigger className="input-minimal">
-                                                        <SelectValue placeholder="Pilih" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {['<', '<=', '>'].map((oper: any, index) => (
-                                                            <SelectItem key={index} value={oper}>
-                                                                {oper}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                            <div className="">
-                                                <Label htmlFor={'nilai.' + index} className="text-sm font-medium">
-                                                    Nilai
-                                                </Label>
-                                                <Input
-                                                    type="text"
-                                                    name={'nilai.' + index}
-                                                    value={data.attribut[index].nilai}
-                                                    onChange={handleChange}
-                                                    id={'nilai.' + index}
-                                                    className="input"
-                                                    disabled={processing}
-                                                    placeholder="Masukkan nilai indikator"
-                                                />
-                                            </div>
-                                            <div>
-                                                <Button type="button" variant={'destructive'} size={'sm'} onClick={() => removeAttribut(index)}>
-                                                    {' '}
-                                                    <XIcon />
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                                        );
+                                    })}
 
-                                <Button type="button" variant={'outline'} size={'sm'} onClick={addAttribut}>
-                                    + Tambah Operator
-                                </Button>
-                            </div>
+                                    <Button type="button" variant={'outline'} size={'sm'} onClick={addAttribut}>
+                                        + Tambah Operator
+                                    </Button>
+                                </div>
                             )}
                         </div>
                         <DialogFooter>

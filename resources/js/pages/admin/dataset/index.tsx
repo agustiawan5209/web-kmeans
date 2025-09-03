@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, DatasetTypes } from '@/types';
+import { BreadcrumbItem, DatasetTypes, IndikatorTypes } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { EyeIcon, PenBoxIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 interface IndikatorIndexProps {
+    indikator: IndikatorTypes[];
     dataset: {
         current_page: number;
         data: DatasetTypes[];
@@ -32,7 +33,7 @@ interface IndikatorIndexProps {
     titlePage?: string;
 }
 
-export default function IndikatorIndex({ dataset, breadcrumb, titlePage }: IndikatorIndexProps) {
+export default function IndikatorIndex({ dataset, indikator, breadcrumb, titlePage }: IndikatorIndexProps) {
     const breadcrumbs: BreadcrumbItem[] = useMemo(
         () => (breadcrumb ? breadcrumb.map((item) => ({ title: item.title, href: item.href })) : []),
         [breadcrumb],
@@ -51,9 +52,10 @@ export default function IndikatorIndex({ dataset, breadcrumb, titlePage }: Indik
                         <h2 className="text-lg font-bold md:text-xl">Dataset Makanan</h2>
                         <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
                             <Link href={route('admin.dataset.create')}>
-                            <Button variant={'default'} type="button" className="cursor-pointer">
-                                Tambah Data
-                            </Button></Link>
+                                <Button variant={'default'} type="button" className="cursor-pointer">
+                                    Tambah Data
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                     <div className="overflow-x-auto rounded-md border">
@@ -62,6 +64,11 @@ export default function IndikatorIndex({ dataset, breadcrumb, titlePage }: Indik
                                 <TableRow>
                                     <TableHead className="cursor-pointer">no</TableHead>
                                     <TableHead className="cursor-pointer">Label</TableHead>
+                                    {indikator.map((item: IndikatorTypes, index) => (
+                                        <TableHead key={index} className="cursor-pointer">
+                                            {item.nama}
+                                        </TableHead>
+                                    ))}
                                     <TableHead className="cursor-pointer">Aksi</TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -71,23 +78,30 @@ export default function IndikatorIndex({ dataset, breadcrumb, titlePage }: Indik
                                         <TableRow key={item.id}>
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>{item.label}</TableCell>
+                                            {item.parameter.map((parameterItem, parameterIndex) => {
+                                                return indikator.map((indikatoritem: IndikatorTypes, index) => {
+                                                    if (parameterItem.indikator_id === indikatoritem.id) {
+                                                        return <TableCell key={index}>{parameterItem.nilai}</TableCell>;
+                                                    }
+                                                });
+                                            })}
                                             <TableCell>
                                                 <div className="flex flex-row items-center gap-2">
                                                     <DeleteConfirmationForm
                                                         title={`Hapus dataset ${item.id}`}
                                                         id={item.id}
-                                                        url={route('admin.dataset.destroy', {dataset: item.id})}
+                                                        url={route('admin.dataset.destroy', { dataset: item.id })}
                                                         setOpenDialog={setisDeleteDialog}
                                                     />
-                                                    <Link href={route('admin.dataset.show', {dataset: item.id})}>
-                                                    <Button variant={'default'} type='button' className='bg-chart-1'>
-                                                        <EyeIcon size={4} />
-                                                    </Button>
+                                                    <Link href={route('admin.dataset.show', { dataset: item.id })}>
+                                                        <Button variant={'default'} type="button" className="bg-chart-1">
+                                                            <EyeIcon size={4} />
+                                                        </Button>
                                                     </Link>
-                                                    <Link href={route('admin.dataset.edit', {dataset: item.id})}>
-                                                    <Button variant={'default'} type='button' className='bg-chart-4'>
-                                                        <PenBoxIcon size={4} />
-                                                    </Button>
+                                                    <Link href={route('admin.dataset.edit', { dataset: item.id })}>
+                                                        <Button variant={'default'} type="button" className="bg-chart-4">
+                                                            <PenBoxIcon size={4} />
+                                                        </Button>
                                                     </Link>
                                                 </div>
                                             </TableCell>
@@ -103,8 +117,8 @@ export default function IndikatorIndex({ dataset, breadcrumb, titlePage }: Indik
                             </TableBody>
                         </Table>
                     </div>
-                    <div className="flex items-center justify-between mt-4">
-                    <PaginationTable links={dataset.links} data={dataset} />
+                    <div className="mt-4 flex items-center justify-between">
+                        <PaginationTable links={dataset.links} data={dataset} />
                     </div>
                 </div>
             </Card>

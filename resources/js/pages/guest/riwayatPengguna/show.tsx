@@ -39,77 +39,77 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
             <Head title={titlePage ?? 'Detail'} />
             <div className="container mx-auto px-4 py-10">
                 <Card>
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="min-h-screen ">
-                <div className="mx-auto max-w-7xl">
-                    {/* Header */}
-                    <motion.div initial={{ y: -20 }} animate={{ y: 0 }} transition={{ duration: 0.5 }} className="mb-10 text-center">
-                        <h1 className="mb-2 text-3xl font-bold text-gray-900">Detail Prediksi Makanan Rumput Laut Pengguna</h1>
-                    </motion.div>
-                    {/* Summary Cards */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2, duration: 0.5 }}
-                        className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2"
-                    >
-                        {/* Water Quality */}
-                        <div className="overflow-hidden rounded-xl border-l-4 border-yellow-500 bg-white p-6 shadow-md">
-                            <h3 className="text-sm font-medium text-gray-500">Data Pengguna</h3>
-                            <div className="mt-4">
-                                <div className="flex justify-between py-1">
-                                    <span className="text-sm text-gray-600">Nama </span>
-                                    <span className="text-sm font-medium">{riwayatPengguna.user.name}</span>
-                                </div>
-                                <div className="flex justify-between py-1">
-                                    <span className="text-sm text-gray-600">Email </span>
-                                    <span className="text-sm font-medium">{riwayatPengguna.user.email}</span>
-                                </div>
-                                <div className="flex justify-between py-1">
-                                    <span className="text-sm text-gray-600">Alamat </span>
-                                    <span className="text-sm font-medium">{riwayatPengguna.user.alamat}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="overflow-hidden rounded-xl border-l-4 border-purple-500 bg-white p-6 shadow-md">
-                            <h3 className="text-sm font-medium text-gray-500">Hasil Prediksi Makanan Jenis Rumput Laut</h3>
-                            <div className="mt-4">
-                                {Object.entries(riwayatPengguna.model).map(([key, value]) => (
-                                    <div key={key} className="flex justify-between py-1">
-                                        <span className="text-sm text-gray-600">{key}</span>
-                                        <span className="text-sm font-medium">{value}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Detailed Parameters */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4, duration: 0.5 }}
-                        className="mb-10 overflow-hidden rounded-xl bg-white shadow-md"
-                    >
-                        <div className="border-b border-gray-200 px-6 py-5">
-                            <h3 className="text-lg font-medium text-gray-900">Parameter Lingkungan</h3>
-                        </div>
-                        <div className="divide-y divide-gray-200">
-                            <div className="overflow-hidden border-l-4 border-chart-4 bg-white p-6 shadow-md">
-                                <h3 className="text-sm font-medium text-gray-500">Detail Tanaman</h3>
-                                <div className="mt-4 grid grid-cols-3 gap-7 space-y-3">
-                                    {parameter.map((item, index) => (
-                                        <div key={index} className="flex flex-col justify-between border-b-2">
-                                            <span className="text-base font-medium text-gray-800">{item.indikator}</span>
-                                            <span className="text-base font-light">{item.nilai}</span>
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="min-h-screen">
+                        <div className="mx-auto max-w-7xl">
+                            {/* Header */}
+                            <motion.div initial={{ y: -20 }} animate={{ y: 0 }} transition={{ duration: 0.5 }} className="mb-10 text-center">
+                                <h1 className="mb-2 text-3xl font-bold text-gray-900">Detail Prediksi Makanan Rumput Laut Pengguna</h1>
+                            </motion.div>
+                            {/* Summary Cards */}
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.2, duration: 0.5 }}
+                                className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2"
+                            >
+                                {/* Water Quality */}
+                                <div className="overflow-hidden rounded-xl border-l-4 border-yellow-500 bg-white p-6 shadow-md">
+                                    <h3 className="text-sm font-medium text-gray-500">Data Pengguna</h3>
+                                    <div className="mt-4">
+                                        <div className="flex justify-between py-1">
+                                            <span className="text-sm text-gray-600">Nama </span>
+                                            <span className="text-sm font-medium">{riwayatPengguna.user.name}</span>
                                         </div>
-                                    ))}
+                                        <div className="flex justify-between py-1">
+                                            <span className="text-sm text-gray-600">Email </span>
+                                            <span className="text-sm font-medium">{riwayatPengguna.user.email}</span>
+                                        </div>
+                                        <div className="flex justify-between py-1">
+                                            <span className="text-sm text-gray-600">Alamat </span>
+                                            <span className="text-sm font-medium">{riwayatPengguna.user.alamat}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </motion.div>
+                                <div className="overflow-hidden rounded-xl border-l-4 border-purple-500 bg-white p-6 shadow-md">
+                                    <h3 className="text-sm font-medium text-gray-500">Hasil Prediksi Makanan Jenis Rumput Laut</h3>
+                                    <div className="mt-4">
+                                        {Object.entries(riwayatPengguna.model).map(([key, value]) => (
+                                            <div key={key} className="flex justify-between py-1">
+                                                <span className="text-sm text-gray-600">{key}</span>
+                                                <span className="text-sm font-medium">{value}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </motion.div>
 
-                    {/* Visualization Placeholder */}
-                    {/* <motion.div
+                            {/* Detailed Parameters */}
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.4, duration: 0.5 }}
+                                className="mb-10 overflow-hidden rounded-xl bg-white shadow-md"
+                            >
+                                <div className="border-b border-gray-200 px-6 py-5">
+                                    <h3 className="text-lg font-medium text-gray-900">Parameter Nutrisi Rekomendasi Makanan</h3>
+                                </div>
+                                <div className="divide-y divide-gray-200">
+                                    <div className="overflow-hidden border-l-4 border-chart-4 bg-white p-6 shadow-md">
+                                        <h3 className="text-sm font-medium text-gray-500">Detail Tanaman</h3>
+                                        <div className="mt-4 grid grid-cols-3 gap-7 space-y-3">
+                                            {parameter.map((item, index) => (
+                                                <div key={index} className="flex flex-col justify-between border-b-2">
+                                                    <span className="text-base font-medium text-gray-800">{item.indikator}</span>
+                                                    <span className="text-base font-light">{item.nilai}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                            {/* Visualization Placeholder */}
+                            {/* <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.6, duration: 0.5 }}
@@ -121,18 +121,18 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
                         </div>
                     </motion.div> */}
 
-                    {/* Footer */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.8, duration: 0.5 }}
-                        className="text-center text-sm text-gray-500"
-                    >
-                        <p>Terakhir diperbarui: {new Date().toLocaleDateString('id-ID')}</p>
+                            {/* Footer */}
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.8, duration: 0.5 }}
+                                className="text-center text-sm text-gray-500"
+                            >
+                                <p>Terakhir diperbarui: {new Date().toLocaleDateString('id-ID')}</p>
+                            </motion.div>
+                        </div>
                     </motion.div>
-                </div>
-            </motion.div>
-            </Card>
+                </Card>
             </div>
         </MainLayout>
     );

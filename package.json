@@ -55,6 +55,7 @@
         "@tailwindcss/vite": "^4.0.6",
         "@tensorflow/tfjs": "^4.22.0",
         "@tensorflow/tfjs-layers": "^4.22.0",
+        "@turf/clusters-kmeans": "^7.2.0",
         "@types/react": "^19.0.3",
         "@types/react-dom": "^19.0.2",
         "@vitejs/plugin-react": "^4.3.4",

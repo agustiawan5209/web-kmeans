@@ -1,172 +1,225 @@
 // utils/kmeansCalculator.ts
+import * as tf from '@tensorflow/tfjs';
 import { FoodData, ScaledFoodData, Centroids, ClusterStats } from '../types';
 
 export class KMeansCalculator {
-  private features: (keyof FoodData)[] = [
-    'KALORI', 'PROTEIN', 'LEMAK', 'KARBOHIDRAT',
-    'NATRIUM', 'KALIUM', 'KALSIUM', 'MAGNESIUM'
-  ];
+    private features: (keyof FoodData)[] = [
+        'KALORI', 'PROTEIN', 'LEMAK', 'KARBOHIDRAT',
+        'NATRIUM', 'KALIUM', 'KALSIUM', 'MAGNESIUM'
+    ];
 
-  // Centroid awal custom berdasarkan input Anda
-  private customCentroids: Centroids = {
-    PAGI: [200.16, 5.02, 4.61, 36.54, 24.86, 323.88, 46.47, 28.28],
-    SIANG: [103.94, 5.32, 4.63, 12.03, 15.65, 260.27, 51.72, 32.82],
-    MALAM: [185.39, 2.69, 2.67, 40.99, 22.05, 481.22, 70.34, 31.08]
-  };
+    private customCentroids: Centroids = {
+        PAGI: [200.16, 5.02, 4.61, 36.54, 24.86, 323.88, 46.47, 28.28],
+        SIANG: [103.94, 5.32, 4.63, 12.03, 15.65, 260.27, 51.72, 32.82],
+        MALAM: [185.39, 2.69, 2.67, 40.99, 22.05, 481.22, 70.34, 31.08]
+    };
 
-  // Scale data menggunakan Z-score normalization
-  private scaleData(data: FoodData[]): ScaledFoodData[] {
-    const means = this.calculateMeans(data);
-    const stdDevs = this.calculateStdDevs(data, means);
+    // Scale data menggunakan Z-score normalization
+    private scaleData(data: FoodData[]): { scaledData: ScaledFoodData[], means: number[], stdDevs: number[] } {
+        // Gunakan tf.tidy untuk automatis memory management
+        return tf.tidy(() => {
+            const values = data.map(item => this.features.map(feature => item[feature]));
+            const tensor = tf.tensor2d(values);
 
-    return data.map(item => {
-      const scaledValues = this.features.map((feature, index) => {
-        return (item[feature] - means[index]) / stdDevs[index];
-      });
+            const means = tensor.mean(0).dataSync();
+            const variances = tensor.sub(tensor.mean(0)).square().mean(0);
+            const stdDevs = variances.sqrt().dataSync();
 
-      return { ...item, scaledValues };
-    });
-  }
+            // Handle zero standard deviation
+            const safeStdDevs = stdDevs.map(dev => dev === 0 ? 1 : dev);
 
-  private calculateMeans(data: FoodData[]): number[] {
-    const means = this.features.map(feature => {
-      const sum = data.reduce((acc, item) => acc + item[feature], 0);
-      return sum / data.length;
-    });
-    return means;
-  }
+            const scaledTensor = tensor.sub(means).div(safeStdDevs);
+            const scaledValues = scaledTensor.arraySync() as number[][];
 
-  private calculateStdDevs(data: FoodData[], means: number[]): number[] {
-    return this.features.map((feature, index) => {
-      const variance = data.reduce((acc, item) => {
-        return acc + Math.pow(item[feature] - means[index], 2);
-      }, 0) / data.length;
+            const scaledData: ScaledFoodData[] = data.map((item, index) => ({
+                ...item,
+                scaledValues: scaledValues[index]
+            }));
 
-      return Math.sqrt(variance);
-    });
-  }
-
-  // Scale centroid custom
-  private scaleCustomCentroids(means: number[], stdDevs: number[]): number[][] {
-    return Object.values(this.customCentroids).map(centroid => {
-      return centroid.map((value, index) => {
-        return (value - means[index]) / stdDevs[index];
-      });
-    });
-  }
-
-  // Hitung jarak Euclidean
-  private euclideanDistance(point1: number[], point2: number[]): number {
-    return Math.sqrt(
-      point1.reduce((sum, value, index) => {
-        return sum + Math.pow(value - point2[index], 2);
-      }, 0)
-    );
-  }
-
-  // Algoritma K-Means utama
-  public performKMeans(data: FoodData[], maxIterations: number = 100): ScaledFoodData[] {
-    // Scale data
-    const scaledData = this.scaleData(data);
-    const means = this.calculateMeans(data);
-    const stdDevs = this.calculateStdDevs(data, means);
-
-    // Scale centroid custom
-    const scaledCentroids = this.scaleCustomCentroids(means, stdDevs);
-
-    let iterations = 0;
-    let changed = true;
-
-    while (iterations < maxIterations && changed) {
-      changed = false;
-
-      // Assign points to nearest centroid
-      scaledData.forEach(item => {
-        let minDistance = Infinity;
-        let closestCluster = -1;
-
-        scaledCentroids.forEach((centroid, clusterIndex) => {
-          const distance = this.euclideanDistance(item.scaledValues, centroid);
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestCluster = clusterIndex;
-          }
+            return {
+                scaledData,
+                means: Array.from(means),
+                stdDevs: Array.from(safeStdDevs)
+            };
         });
-
-        if (!item.clusterResult || item.clusterResult.cluster !== closestCluster) {
-          changed = true;
-          item.clusterResult = { cluster: closestCluster, distance: minDistance };
-        }
-      });
-
-      // Update centroids jika masih ada perubahan
-      if (changed) {
-        const clusterSums: { [key: number]: number[] } = {};
-        const clusterCounts: { [key: number]: number } = {};
-
-        // Initialize
-        scaledCentroids.forEach((_, index) => {
-          clusterSums[index] = new Array(this.features.length).fill(0);
-          clusterCounts[index] = 0;
-        });
-
-        // Sum values for each cluster
-        scaledData.forEach(item => {
-          if (item.clusterResult) {
-            const cluster = item.clusterResult.cluster;
-            item.scaledValues.forEach((value, index) => {
-              clusterSums[cluster][index] += value;
-            });
-            clusterCounts[cluster]++;
-          }
-        });
-
-        // Calculate new centroids
-        scaledCentroids.forEach((_, clusterIndex) => {
-          if (clusterCounts[clusterIndex] > 0) {
-            scaledCentroids[clusterIndex] = clusterSums[clusterIndex].map(
-              sum => sum / clusterCounts[clusterIndex]
-            );
-          }
-        });
-      }
-
-      iterations++;
     }
 
-    return scaledData;
-  }
+    // Scale centroid custom
+    private scaleCustomCentroids(means: number[], stdDevs: number[]): number[][] {
+        return tf.tidy(() => {
+            const centroidsArray = Object.values(this.customCentroids);
+            const centroidsTensor = tf.tensor2d(centroidsArray);
+            const meansTensor = tf.tensor1d(means);
+            const stdDevsTensor = tf.tensor1d(stdDevs);
 
-  // Hitung statistik cluster
-  public calculateClusterStats(data: ScaledFoodData[]): ClusterStats {
-    const stats: ClusterStats = {};
-    const clusterNames = ['Pagi', 'Siang', 'Malam'];
+            const scaledCentroidsTensor = centroidsTensor.sub(meansTensor).div(stdDevsTensor);
+            return scaledCentroidsTensor.arraySync() as number[][];
+        });
+    }
 
-    clusterNames.forEach((name, index) => {
-      const clusterData = data.filter(item =>
-        item.clusterResult?.cluster === index
-      );
+    // Hitung jarak Euclidean antara centroid dan semua points (versi diperbaiki)
+    private calculateAllDistances(centroids: tf.Tensor2D, points: tf.Tensor2D): tf.Tensor2D {
+        return tf.tidy(() => {
+            // points shape: [numPoints, numFeatures]
+            // centroids shape: [numCentroids, numFeatures]
 
-      if (clusterData.length > 0) {
-        const averages = this.features.reduce((acc, feature) => {
-          const sum = clusterData.reduce((total, item) => total + item[feature], 0);
-          acc[feature] = Math.round((sum / clusterData.length) * 100) / 100;
-          return acc;
-        }, {} as Partial<FoodData>);
+            // Expand dimensions untuk broadcasting
+            // points: [numPoints, 1, numFeatures]
+            const expandedPoints = points.expandDims(1);
 
-        stats[name] = {
-          count: clusterData.length,
-          averages
-        };
-      }
-    });
+            // centroids: [1, numCentroids, numFeatures]
+            const expandedCentroids = centroids.expandDims(0);
 
-    return stats;
-  }
+            // Hitung squared differences: [numPoints, numCentroids, numFeatures]
+            const differences = expandedPoints.sub(expandedCentroids);
+            const squaredDifferences = differences.square();
 
-  // Get cluster name mapping
-  public getClusterName(clusterNumber: number): string {
-    const clusterMap = ['Pagi', 'Siang', 'Malam'];
-    return clusterMap[clusterNumber] || 'Unknown';
-  }
+            // Sum along the features axis (axis 2): [numPoints, numCentroids]
+            const sumSquaredDifferences = squaredDifferences.sum(2);
+
+            // Take square root: [numPoints, numCentroids]
+            const distances = sumSquaredDifferences.sqrt();
+
+            return distances;
+        });
+    }
+
+    // Algoritma K-Means utama yang diperbaiki
+    public performKMeans(data: FoodData[], maxIterations: number = 100): ScaledFoodData[] {
+        if (data.length === 0) return [];
+
+        // Scale data
+        const { scaledData, means, stdDevs } = this.scaleData(data);
+
+        // Scale centroid custom
+        const scaledCentroids = this.scaleCustomCentroids(means, stdDevs);
+
+        return tf.tidy(() => {
+            // Convert to tensors
+            let centroids = tf.tensor2d(scaledCentroids);
+            const points = tf.tensor2d(scaledData.map(item => item.scaledValues));
+
+            let previousAssignments: tf.Tensor1D | null = null;
+            let iterations = 0;
+            let changed = true;
+
+            while (iterations < maxIterations && changed) {
+                // Hitung jarak antara semua titik dan centroid sekaligus
+                const distances = this.calculateAllDistances(centroids, points);
+
+                // Temukan centroid terdekat untuk setiap titik (along axis 1)
+                const assignments = distances.argMin(1);
+
+                // Cek konvergensi
+                if (previousAssignments) {
+                    const assignmentChange = assignments.notEqual(previousAssignments).sum().dataSync()[0];
+                    changed = assignmentChange > 0;
+                    previousAssignments.dispose();
+                }
+
+                previousAssignments = assignments.clone();
+
+                if (changed && iterations < maxIterations - 1) {
+                    // Update centroids
+                    const newCentroids: tf.Tensor2D[] = [];
+
+                    for (let i = 0; i < scaledCentroids.length; i++) {
+                        // Dapatkan indices points yang termasuk dalam cluster ini
+                        const clusterIndices: number[] = [];
+                        const assignmentsData = assignments.dataSync() as Int32Array;
+
+                        for (let j = 0; j < assignmentsData.length; j++) {
+                            if (assignmentsData[j] === i) {
+                                clusterIndices.push(j);
+                            }
+                        }
+
+                        if (clusterIndices.length > 0) {
+                            const indicesTensor = tf.tensor1d(clusterIndices, 'int32');
+                            const clusterPoints = points.gather(indicesTensor);
+                            const newCentroid = clusterPoints.mean(0, true); // keepDims = true
+                            newCentroids.push(newCentroid as tf.Tensor2D);
+
+                            indicesTensor.dispose();
+                            clusterPoints.dispose();
+                        } else {
+                            // Jika cluster kosong, gunakan centroid lama
+                            newCentroids.push(centroids.gather([i]));
+                        }
+                    }
+
+                    // Gabungkan centroid baru
+                    const updatedCentroids = tf.concat(newCentroids, 0);
+                    centroids.dispose();
+                    centroids = updatedCentroids as tf.Tensor2D;
+                }
+
+                distances.dispose();
+                iterations++;
+            }
+
+            // Hitung assignments final dan distances
+            const finalDistances = this.calculateAllDistances(centroids, points);
+            const finalAssignments = finalDistances.argMin(1);
+            const minDistances = finalDistances.min(1);
+
+            const assignmentsData = finalAssignments.dataSync() as Int32Array;
+            const distancesData = minDistances.dataSync();
+
+            // Assign cluster results ke scaledData
+            scaledData.forEach((item, index) => {
+                item.clusterResult = {
+                    cluster: assignmentsData[index],
+                    distance: distancesData[index]
+                };
+            });
+
+            return scaledData;
+        });
+    }
+    // Hitung statistik cluster (diperbaiki)
+    public calculateClusterStats(data: ScaledFoodData[]): ClusterStats {
+        const stats: ClusterStats = {};
+        const clusterNames = ['Pagi', 'Siang', 'Malam'];
+
+        return tf.tidy(() => {
+            clusterNames.forEach((name, clusterIndex) => {
+                const clusterItems = data.filter(item => item.clusterResult?.cluster === clusterIndex);
+
+                if (clusterItems.length > 0) {
+                    // Buat tensor dari data cluster
+                    const values = clusterItems.map(item =>
+                        this.features.map(feature => item[feature])
+                    );
+
+                    const tensor = tf.tensor2d(values);
+                    const averagesTensor = tensor.mean(0);
+                    const averagesData = averagesTensor.dataSync();
+
+                    const averages: Partial<FoodData> = {};
+                    this.features.forEach((feature, idx) => {
+                        averages[feature] = Math.round(averagesData[idx] * 100) / 100;
+                    });
+
+                    stats[name] = {
+                        count: clusterItems.length,
+                        averages
+                    };
+                } else {
+                    stats[name] = {
+                        count: 0,
+                        averages: {}
+                    };
+                }
+            });
+
+            return stats;
+        });
+    }
+
+    // Get cluster name mapping
+    public getClusterName(clusterNumber: number): string {
+        const clusterMap = ['Pagi', 'Siang', 'Malam'];
+        return clusterMap[clusterNumber] || 'Unknown';
+    }
 }

@@ -21,7 +21,7 @@ const getWaterQualityColor = (ph: number) => {
 interface HarvestDetailProps {
     riwayatPengguna: {
         id: number;
-        user: { name: string; email: string; alamat:string; };
+        user: { name: string; email: string; alamat: string };
         model: any;
         parameter: any;
     };
@@ -66,18 +66,18 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
                         <div className="overflow-hidden rounded-xl border-l-4 border-yellow-500 bg-white p-6 shadow-md">
                             <h3 className="text-sm font-medium text-gray-500">Data Pengguna</h3>
                             <div className="mt-4">
-                                    <div className="flex justify-between py-1">
-                                        <span className="text-sm text-gray-600">Nama </span>
-                                        <span className="text-sm font-medium">{riwayatPengguna.user.name}</span>
-                                    </div>
-                                    <div className="flex justify-between py-1">
-                                        <span className="text-sm text-gray-600">Email </span>
-                                        <span className="text-sm font-medium">{riwayatPengguna.user.email}</span>
-                                    </div>
-                                    <div className="flex justify-between py-1">
-                                        <span className="text-sm text-gray-600">Alamat </span>
-                                        <span className="text-sm font-medium">{riwayatPengguna.user.alamat}</span>
-                                    </div>
+                                <div className="flex justify-between py-1">
+                                    <span className="text-sm text-gray-600">Nama </span>
+                                    <span className="text-sm font-medium">{riwayatPengguna.user.name}</span>
+                                </div>
+                                <div className="flex justify-between py-1">
+                                    <span className="text-sm text-gray-600">Email </span>
+                                    <span className="text-sm font-medium">{riwayatPengguna.user.email}</span>
+                                </div>
+                                <div className="flex justify-between py-1">
+                                    <span className="text-sm text-gray-600">Alamat </span>
+                                    <span className="text-sm font-medium">{riwayatPengguna.user.alamat}</span>
+                                </div>
                             </div>
                         </div>
                         <div className="overflow-hidden rounded-xl border-l-4 border-purple-500 bg-white p-6 shadow-md">
@@ -101,7 +101,7 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
                         className="mb-10 overflow-hidden rounded-xl bg-white shadow-md"
                     >
                         <div className="border-b border-gray-200 px-6 py-5">
-                            <h3 className="text-lg font-medium text-gray-900">Parameter Lingkungan</h3>
+                            <h3 className="text-lg font-medium text-gray-900">Parameter Nutrisi Rekomendasi Makanan</h3>
                         </div>
                         <div className="divide-y divide-gray-200">
                             <div className="overflow-hidden border-l-4 border-chart-4 bg-white p-6 shadow-md">

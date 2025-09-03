@@ -50,7 +50,6 @@ export default function HarvestDetailPage({ dataset, breadcrumb, indikator, titl
             <Head title={titlePage ?? 'Detail'} />
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="min-h-screen bg-gray-50">
                 <div className="mx-auto max-w-7xl">
-
                     {/* Detailed Parameters */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -59,7 +58,7 @@ export default function HarvestDetailPage({ dataset, breadcrumb, indikator, titl
                         className="mb-10 overflow-hidden rounded-xl bg-white shadow-md"
                     >
                         <div className="border-b border-gray-200 px-6 py-5">
-                            <h3 className="text-lg font-medium text-gray-900">Parameter Lingkungan</h3>
+                            <h3 className="text-lg font-medium text-gray-900">Parameter Nutrisi Rekomendasi Makanan</h3>
                         </div>
                         <div className="divide-y divide-gray-200">
                             <div className="overflow-hidden border-l-4 border-chart-4 bg-white p-6 shadow-md">

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('datasets', function (Blueprint $table) {
             $table->id();
-            $table->string('label', 30)
+            $table->text('label')
                 ->comment('kelas dari nutris tanaman')->nullable();
             $table->json('parameter')
                 ->comment('dataset makanan dalam format JSON');

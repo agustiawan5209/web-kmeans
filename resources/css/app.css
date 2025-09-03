@@ -5,7 +5,7 @@
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
-/* @custom-variant dark (&:is(.dark *)); */
+@custom-variant dark (&:is(.dark *));
 
 @theme {
     --font-sans:
@@ -70,76 +70,76 @@
 }
 
 :root {
-    --background: #F9FAFB; /* Light gray */
-    --foreground: #1F2937; /* Dark gray */
-    --card: #FFFFFF; /* White */
-    --card-foreground: #1F2937; /* Dark gray */
-    --popover: #FFFFFF; /* White */
-    --popover-foreground: #1F2937; /* Dark gray */
-    --primary: oklch(0.6 0.118 184.704); /* Blue */
-    --primary-foreground: #FFFFFF; /* White */
-    --secondary: #6B7280; /* Gray */
-    --secondary-foreground: #FFFFFF; /* White */
-    --muted: #D1D5DB; /* Light gray */
-    --muted-foreground: #1F2937; /* Dark gray */
-    --accent: #FBBF24; /* Amber */
-    --accent-foreground: #1F2937; /* Dark gray */
-    --destructive: #EF4444; /* Red */
-    --destructive-foreground: #FFFFFF; /* White */
-    --border: #E5E7EB; /* Light gray */
-    --input: #F3F4F6; /* Light gray */
-    --ring: #60A5FA; /* Light blue */
-    --chart-1: #4F46E5; /* Indigo */
-    --chart-2: #F43F5E; /* Pink */
-    --chart-3: #FBBF24; /* Amber */
-    --chart-4: #34D399; /* Green */
-    --chart-5: #3B82F6; /* Blue */
+    --background: #f9fafb; /* Light gray */
+    --foreground: #1f2937; /* Dark gray */
+    --card: #ffffff; /* White */
+    --card-foreground: #1f2937; /* Dark gray */
+    --popover: #ffffff; /* White */
+    --popover-foreground: #1f2937; /* Dark gray */
+    --primary: #7da7d9; /* Soft blue */
+    --primary-foreground: #ffffff; /* White */
+    --secondary: #a3b5cc; /* Soft gray-blue */
+    --secondary-foreground: #ffffff; /* White */
+    --muted: #cbd5e1; /* Light gray-blue */
+    --muted-foreground: #1f2937; /* Dark gray */
+    --accent: #fbbf24; /* Amber (tetap untuk aksen) */
+    --accent-foreground: #1f2937; /* Dark gray */
+    --destructive: #ef4444; /* Red */
+    --destructive-foreground: #ffffff; /* White */
+    --border: #e5e7eb; /* Light gray */
+    --input: #e3e8f0; /* Soft light blue-gray */
+    --ring: #a3c1e1; /* Soft blue */
+    --chart-1: #7da7d9; /* Soft blue */
+    --chart-2: #f43f5e; /* Pink */
+    --chart-3: #fbbf24; /* Amber */
+    --chart-4: #34d399; /* Green */
+    --chart-5: #6b9bd1; /* Soft blue */
     --radius: 0.625rem;
-    --sidebar: #FFFFFF; /* White */
-    --sidebar-foreground: #1F2937; /* Dark gray */
-    --sidebar-primary: #3B82F6; /* Blue */
-    --sidebar-primary-foreground: #FFFFFF; /* White */
-    --sidebar-accent: #FBBF24; /* Amber */
-    --sidebar-accent-foreground: #1F2937; /* Dark gray */
-    --sidebar-border: #E5E7EB; /* Light gray */
-    --sidebar-ring: #60A5FA; /* Light blue */
+    --sidebar: #ffffff; /* White */
+    --sidebar-foreground: #1f2937; /* Dark gray */
+    --sidebar-primary: #7da7d9; /* Soft blue */
+    --sidebar-primary-foreground: #ffffff; /* White */
+    --sidebar-accent: #fbbf24; /* Amber */
+    --sidebar-accent-foreground: #1f2937; /* Dark gray */
+    --sidebar-border: #e5e7eb; /* Light gray */
+    --sidebar-ring: #a3c1e1; /* Soft blue */
 }
 
 .dark {
-    --background: #1F2937; /* Dark gray */
-    --foreground: #F9FAFB; /* Light gray */
-    --card: #1F2937; /* Dark gray */
-    --card-foreground: #F9FAFB; /* Light gray */
-    --popover: #1F2937; /* Dark gray */
-    --popover-foreground: #F9FAFB; /* Light gray */
-    --primary: oklch(0.6 0.118 184.704); /* Blue */
-    --primary-foreground: #FFFFFF; /* White */
-    --secondary: #9CA3AF; /* Gray */
-    --secondary-foreground: #F9FAFB; /* Light gray */
-    --muted: #9CA3AF; /* Gray */
-    --muted-foreground: #F3F4F6; /* Light gray */
-    --accent: #FBBF24; /* Amber */
-    --accent-foreground: #1F2937; /* Dark gray */
-    --destructive: #EF4444; /* Red */
-    --destructive-foreground: #FFFFFF; /* White */
-    --border: #4B5563; /* Dark gray */
-    --input: #4B5563; /* Dark gray */
-    --ring: #3B82F6; /* Blue */
-    --chart-1: #4F46E5; /* Indigo */
-    --chart-2: #F43F5E; /* Pink */
-    --chart-3: #FBBF24; /* Amber */
-    --chart-4: #34D399; /* Green */
-    --chart-5: #3B82F6; /* Blue */
-    --sidebar: #1F2937; /* Dark gray */
-    --sidebar-foreground: #F9FAFB; /* Light gray */
-    --sidebar-primary: #3B82F6; /* Blue */
-    --sidebar-primary-foreground: #F9FAFB; /* Light gray */
-    --sidebar-accent: #FBBF24; /* Amber */
-    --sidebar-accent-foreground: #F9FAFB; /* Light gray */
-    --sidebar-border: #4B5563; /* Dark gray */
-    --sidebar-ring: #3B82F6; /* Blue */
+    --background: #f9fafb; /* Light gray */
+    --foreground: #1f2937; /* Dark gray */
+    --card: #ffffff; /* White */
+    --card-foreground: #1f2937; /* Dark gray */
+    --popover: #ffffff; /* White */
+    --popover-foreground: #1f2937; /* Dark gray */
+    --primary: #7da7d9; /* Soft blue */
+    --primary-foreground: #ffffff; /* White */
+    --secondary: #a3b5cc; /* Soft gray-blue */
+    --secondary-foreground: #ffffff; /* White */
+    --muted: #cbd5e1; /* Light gray-blue */
+    --muted-foreground: #1f2937; /* Dark gray */
+    --accent: #fbbf24; /* Amber (tetap untuk aksen) */
+    --accent-foreground: #1f2937; /* Dark gray */
+    --destructive: #ef4444; /* Red */
+    --destructive-foreground: #ffffff; /* White */
+    --border: #e5e7eb; /* Light gray */
+    --input: #e3e8f0; /* Soft light blue-gray */
+    --ring: #a3c1e1; /* Soft blue */
+    --chart-1: #7da7d9; /* Soft blue */
+    --chart-2: #f43f5e; /* Pink */
+    --chart-3: #fbbf24; /* Amber */
+    --chart-4: #34d399; /* Green */
+    --chart-5: #6b9bd1; /* Soft blue */
+    --radius: 0.625rem;
+    --sidebar: #ffffff; /* White */
+    --sidebar-foreground: #1f2937; /* Dark gray */
+    --sidebar-primary: #7da7d9; /* Soft blue */
+    --sidebar-primary-foreground: #ffffff; /* White */
+    --sidebar-accent: #fbbf24; /* Amber */
+    --sidebar-accent-foreground: #1f2937; /* Dark gray */
+    --sidebar-border: #e5e7eb; /* Light gray */
+    --sidebar-ring: #a3c1e1; /* Soft blue */
 }
-
 
 @layer base {
     * {
@@ -149,4 +149,52 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+/* App.css */
+.cluster-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.cluster-0 {
+    background-color: #ff6b6b;
+    color: white;
+}
+.cluster-1 {
+    background-color: #4ecdc4;
+    color: white;
+}
+.cluster-2 {
+    background-color: #45b7d1;
+    color: white;
+}
+
+.food-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.food-table th {
+    background-color: #f5f5f5;
+    cursor: pointer;
+    padding: 12px;
+    text-align: left;
+}
+
+.food-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.cluster-svg {
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+.data-point:hover {
+    r: 8;
+    stroke-width: 2;
 }
