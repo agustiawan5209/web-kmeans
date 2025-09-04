@@ -1,6 +1,7 @@
 // components/KMeansClustering.tsx
 import { ClusterStats, FoodData, ScaledFoodData } from '@/types';
 import { KMeansCalculator } from '@/utils/kmeansCalculator';
+import { saveModelToDB } from '@/utils/modelstorage';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BarChart3, Calculator, Loader2, PieChart, TrendingUp, Users } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
@@ -23,14 +24,22 @@ const KMeansClustering: React.FC<Props> = ({ foodData }) => {
         }
     }, [foodData]);
 
-    const calculateClusters = () => {
+    const calculateClusters = async () => {
         setIsCalculating(true);
 
-        setTimeout(() => {
+        setTimeout(async () => {
             const calculator = new KMeansCalculator();
             const result = calculator.performKMeans(foodData);
             const stats = calculator.calculateClusterStats(result);
 
+            try {
+                const response = await saveModelToDB(result, 'kmeans_nutrition_model');
+                if (response.success) {
+                    console.log('Model saved successfully');
+                }
+            } catch (error) {
+                console.error('Error during clustering calculation:', error);
+            }
             setClusteredData(result);
             setClusterStats(stats);
             setIsCalculating(false);
@@ -76,7 +85,7 @@ const KMeansClustering: React.FC<Props> = ({ foodData }) => {
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="flex min-h-64 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-blue-50 to-green-50 p-8"
+                className="flex min-h-64 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-blue-50 to-blue-50 p-8"
             >
                 <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} className="mb-4">
                     <Loader2 className="h-12 w-12 text-blue-600" />
@@ -102,7 +111,7 @@ const KMeansClustering: React.FC<Props> = ({ foodData }) => {
             <motion.div variants={itemVariants} className="text-center">
                 <motion.div
                     whileHover={{ scale: 1.05 }}
-                    className="mb-4 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-green-600 p-3"
+                    className="mb-4 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-blue-600 p-3"
                 >
                     <PieChart className="h-8 w-8 text-white" />
                 </motion.div>
@@ -151,7 +160,7 @@ const KMeansClustering: React.FC<Props> = ({ foodData }) => {
                                             clusterName === '0'
                                                 ? 'bg-blue-500'
                                                 : clusterName === '1'
-                                                  ? 'bg-green-500'
+                                                  ? 'bg-blue-500'
                                                   : clusterName === '2'
                                                     ? 'bg-purple-500'
                                                     : 'bg-orange-500'
@@ -202,7 +211,7 @@ const KMeansClustering: React.FC<Props> = ({ foodData }) => {
             <motion.div variants={itemVariants}>
                 <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg">
                     <h3 className="mb-6 flex items-center text-xl font-semibold text-gray-900">
-                        <Users className="mr-2 h-6 w-6 text-green-600" />
+                        <Users className="mr-2 h-6 w-6 text-blue-600" />
                         Visualisasi Kluster
                     </h3>
                     <ClusterVisualization data={clusteredData} />

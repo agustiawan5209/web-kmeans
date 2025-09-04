@@ -29,18 +29,18 @@ export default function MainLayout({ children }: AppLayoutProps) {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 via-green-100 to-white">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-white">
             {/* Navigation Bar */}
             <motion.nav
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="fixed top-0 right-0 left-0 z-50 border-b border-green-200 bg-white/90 backdrop-blur-md"
+                className="fixed top-0 right-0 left-0 z-50 border-b border-blue-200 bg-white/90 backdrop-blur-md"
             >
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 items-center justify-between">
                         <div className="flex items-center">
-                            <Heart className="mr-3 h-8 w-8 text-green-600" />
+                            <Heart className="mr-3 h-8 w-8 text-blue-600" />
                             <span className="text-xl font-bold text-gray-900">Sistem Rekomendasi Makanan Sehat</span>
                         </div>
 
@@ -48,20 +48,20 @@ export default function MainLayout({ children }: AppLayoutProps) {
                         <div className="hidden items-center space-x-8 md:flex">
                             {auth.user ? (
                                 <>
-                                    <Link href="/" className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                    <Link href="/" className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                         Beranda
                                     </Link>
-                                    <Link href={route('user.dashboard')} className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                    <Link href={route('user.dashboard')} className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                         Dashboard
                                     </Link>
                                     <Link
                                         href={route('user.form.prediksi')}
-                                        className="font-medium text-gray-700 transition-colors hover:text-green-600"
+                                        className="font-medium text-gray-700 transition-colors hover:text-blue-600"
                                     >
                                         Mulai Rekomendasi
                                     </Link>
                                     <Link href={route('user.riwayatPengguna.index')}>
-                                        <Button variant="outline" size="lg" className="border-green-300 px-8 py-3 text-green-700 hover:bg-green-50">
+                                        <Button variant="outline" size="lg" className="border-blue-300 px-8 py-3 text-blue-700 hover:bg-blue-50">
                                             Riwayat Rekomendasi
                                         </Button>
                                     </Link>
@@ -69,23 +69,23 @@ export default function MainLayout({ children }: AppLayoutProps) {
                                 </>
                             ) : (
                                 <>
-                                    <a href="#hero" className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                    <a href="#hero" className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                         Beranda
                                     </a>
-                                    <a href="#about" className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                    <a href="#about" className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                         Tentang Sistem
                                     </a>
-                                    <a href="#features" className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                    <a href="#features" className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                         Fitur
                                     </a>
-                                    <a href="#how-it-works" className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                    <a href="#how-it-works" className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                         Cara Kerja
                                     </a>
-                                    <Link href={route('login')} className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                    <Link href={route('login')} className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                         Masuk
                                     </Link>
                                     <Link href={route('register')}>
-                                        <Button className="w-fit bg-green-600 text-white hover:bg-green-700">Daftar</Button>
+                                        <Button className="w-fit bg-blue-600 text-white hover:bg-blue-700">Daftar</Button>
                                     </Link>
                                 </>
                             )}
@@ -105,32 +105,28 @@ export default function MainLayout({ children }: AppLayoutProps) {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            className="border-t border-green-200 py-4 md:hidden"
+                            className="border-t border-blue-200 py-4 md:hidden"
                         >
                             <div className="flex flex-col space-y-4">
                                 {auth.user ? (
                                     <>
-                                        <Link href="/" className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                        <Link href="/" className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                             Beranda
                                         </Link>
                                         <Link
                                             href={route('user.dashboard')}
-                                            className="font-medium text-gray-700 transition-colors hover:text-green-600"
+                                            className="font-medium text-gray-700 transition-colors hover:text-blue-600"
                                         >
                                             Dashboard
                                         </Link>
                                         <Link
                                             href={route('user.form.prediksi')}
-                                            className="font-medium text-gray-700 transition-colors hover:text-green-600"
+                                            className="font-medium text-gray-700 transition-colors hover:text-blue-600"
                                         >
                                             Mulai Rekomendasi
                                         </Link>
                                         <Link href={route('user.riwayatPengguna.index')}>
-                                            <Button
-                                                variant="outline"
-                                                size="lg"
-                                                className="border-green-300 px-8 py-3 text-green-700 hover:bg-green-50"
-                                            >
+                                            <Button variant="outline" size="lg" className="border-blue-300 px-8 py-3 text-blue-700 hover:bg-blue-50">
                                                 Riwayat Rekomendasi
                                             </Button>
                                         </Link>
@@ -138,26 +134,26 @@ export default function MainLayout({ children }: AppLayoutProps) {
                                     </>
                                 ) : (
                                     <>
-                                        <a href="#hero" className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                        <a href="#hero" className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                             Beranda
                                         </a>
-                                        <a href="#about" className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                        <a href="#about" className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                             Tentang Sistem
                                         </a>
-                                        <a href="#features" className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                        <a href="#features" className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                             Fitur
                                         </a>
-                                        <a href="#how-it-works" className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                        <a href="#how-it-works" className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                             Cara Kerja
                                         </a>
-                                        <a href="#testimoni" className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                        <a href="#testimoni" className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                             Jenis Makanan
                                         </a>
-                                        <Link href={route('login')} className="font-medium text-gray-700 transition-colors hover:text-green-600">
+                                        <Link href={route('login')} className="font-medium text-gray-700 transition-colors hover:text-blue-600">
                                             Masuk
                                         </Link>
                                         <Link href={route('register')}>
-                                            <Button className="w-fit bg-green-600 text-white hover:bg-green-700">Daftar</Button>
+                                            <Button className="w-fit bg-blue-600 text-white hover:bg-blue-700">Daftar</Button>
                                         </Link>
                                     </>
                                 )}
@@ -176,7 +172,7 @@ export default function MainLayout({ children }: AppLayoutProps) {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="bg-green-900 py-10 text-white"
+                className="bg-blue-900 py-10 text-white"
             >
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <motion.div
@@ -188,10 +184,10 @@ export default function MainLayout({ children }: AppLayoutProps) {
                     >
                         <motion.div variants={fadeInUp} className="md:col-span-2">
                             <div className="mb-4 flex items-center">
-                                <Heart className="mr-3 h-8 w-8 text-green-400" />
+                                <Heart className="mr-3 h-8 w-8 text-blue-400" />
                                 <span className="text-xl font-bold">Sistem Rekomendasi Makanan Sehat</span>
                             </div>
-                            <p className="mb-6 leading-relaxed text-green-200">
+                            <p className="mb-6 leading-relaxed text-blue-200">
                                 Sistem rekomendasi makanan sehat bagi penderita hipertensi berbasis K-Means Clustering yang mempertimbangkan kebutuhan
                                 nutrisi individu.
                             </p>
@@ -203,7 +199,7 @@ export default function MainLayout({ children }: AppLayoutProps) {
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.6, delay: 0.4 }}
                         viewport={{ once: true }}
-                        className="mt-12 border-t border-green-800 pt-8 text-center text-green-300"
+                        className="mt-12 border-t border-blue-800 pt-8 text-center text-blue-300"
                     >
                         <p>&copy; 2024 Sistem Rekomendasi Makanan Sehat. Semua hak dilindungi. Dibangun dengan algoritma K-Means Clustering.</p>
                     </motion.div>

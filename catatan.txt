@@ -1,0 +1,2 @@
+buat model untuk menyimpan  hasil klsutering kmeans;
+buat form untuk menyimpan data penderita hipertensi dan saran makanan berdasarkan hasil klustering

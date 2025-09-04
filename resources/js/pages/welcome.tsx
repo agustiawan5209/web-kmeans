@@ -29,8 +29,8 @@ const Home = () => {
             <Head title="Sistem Rekomendasi Makanan Sehat untuk Hipertensi" />
 
             {/* Hero Section */}
-            <section id="hero" className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-green-50 pt-16">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-green-600/10" />
+            <section id="hero" className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-blue-50 pt-16">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-blue-600/10" />
                 <div className="relative mx-auto max-w-7xl px-4 pt-20 pb-16 text-center sm:px-6 lg:px-8">
                     <motion.div className="mx-auto max-w-4xl" variants={staggerContainer} initial="initial" animate="animate">
                         <motion.div variants={fadeInUp}>
@@ -45,7 +45,7 @@ const Home = () => {
                         </motion.h1>
                         <motion.p variants={fadeInUp} className="mb-8 text-xl leading-relaxed text-gray-600 md:text-2xl">
                             Khusus untuk <span className="font-semibold text-blue-700">Penderita Hipertensi</span> Berdasarkan{' '}
-                            <span className="font-semibold text-green-700">Kebutuhan Nutrisi</span>
+                            <span className="font-semibold text-blue-700">Kebutuhan Nutrisi</span>
                         </motion.p>
                         <motion.p variants={fadeInUp} className="mx-auto mb-10 max-w-2xl text-lg text-gray-500">
                             Manfaatkan algoritma K-means clustering untuk mendapatkan rekomendasi makanan yang tepat sesuai kondisi kesehatan Anda,
@@ -137,14 +137,14 @@ const Home = () => {
                             transition={{ duration: 0.6, delay: 0.4 }}
                             viewport={{ once: true }}
                         >
-                            <Card className="border-green-100 p-8 shadow-lg transition-shadow hover:shadow-xl">
+                            <Card className="border-blue-100 p-8 shadow-lg transition-shadow hover:shadow-xl">
                                 <div className="mb-6 flex items-center">
-                                    <div className="mr-4 rounded-lg bg-green-100 p-3">
-                                        <Activity className="h-8 w-8 text-green-600" />
+                                    <div className="mr-4 rounded-lg bg-blue-100 p-3">
+                                        <Activity className="h-8 w-8 text-blue-600" />
                                     </div>
                                     <div>
                                         <h3 className="text-xl font-semibold text-gray-900">Nutrisi Seimbang</h3>
-                                        <p className="text-green-600">Kebutuhan Gizi</p>
+                                        <p className="text-blue-600">Kebutuhan Gizi</p>
                                     </div>
                                 </div>
                                 <p className="leading-relaxed text-gray-600">
@@ -208,9 +208,9 @@ const Home = () => {
                                 <motion.div
                                     whileHover={{ rotate: 360 }}
                                     transition={{ duration: 0.5 }}
-                                    className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 p-4"
+                                    className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 p-4"
                                 >
-                                    <Calculator className="h-8 w-8 text-green-600" />
+                                    <Calculator className="h-8 w-8 text-blue-600" />
                                 </motion.div>
                                 <h3 className="mb-3 text-lg font-semibold text-gray-900">Analisis Nutrisi</h3>
                                 <p className="text-sm leading-relaxed text-gray-600">
@@ -260,7 +260,7 @@ const Home = () => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-br from-green-50 to-blue-50 py-20"
+                className="bg-gradient-to-br from-blue-50 to-blue-50 py-20"
                 id="how-it-works"
             >
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -304,11 +304,11 @@ const Home = () => {
                             <div className="relative">
                                 <motion.div
                                     whileHover={{ scale: 1.1 }}
-                                    className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-600 text-2xl font-bold text-white"
+                                    className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-600 text-2xl font-bold text-white"
                                 >
                                     2
                                 </motion.div>
-                                <Calculator className="absolute -top-2 -right-2 h-8 w-8 text-green-400" />
+                                <Calculator className="absolute -top-2 -right-2 h-8 w-8 text-blue-400" />
                             </div>
                             <h3 className="mb-3 text-lg font-semibold text-gray-900">Analisis Kebutuhan</h3>
                             <p className="text-sm leading-relaxed text-gray-600">
@@ -396,8 +396,8 @@ const Home = () => {
                             viewport={{ once: true }}
                             className="text-center"
                         >
-                            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                                <Heart className="h-8 w-8 text-green-600" />
+                            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
+                                <Heart className="h-8 w-8 text-blue-600" />
                             </div>
                             <h3 className="mb-3 text-lg font-semibold text-gray-900">Kesehatan Jantung</h3>
                             <p className="text-sm leading-relaxed text-gray-600">
@@ -430,7 +430,7 @@ const Home = () => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-r from-blue-600 to-green-600 py-20"
+                className="bg-gradient-to-r from-blue-600 to-blue-600 py-20"
                 id="cta"
             >
                 <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">

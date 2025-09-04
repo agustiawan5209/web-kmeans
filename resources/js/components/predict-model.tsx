@@ -126,12 +126,7 @@ export default function PredictModels({ models, normalizationParams, transaction
                     const outputParams = normalizationParams.outputParams[key];
                     if (!outputParams) return;
 
-                    const prediction = makePrediction(
-                        model,
-                        inputArr,
-                        outputParams.outputMin,
-                        outputParams.outputMax
-                    );
+                    const prediction = makePrediction(model, inputArr, outputParams.outputMin, outputParams.outputMax);
                     newPredictions[key] = Math.abs(prediction);
 
                     // Metrics calculation dengan cleanup
@@ -142,14 +137,10 @@ export default function PredictModels({ models, normalizationParams, transaction
                                     const range = normalizationParams.featureRanges[j] || { min: 0, max: 1 };
                                     return normalize(transactionX[i][j], range.min, range.max);
                                 });
-                            })
+                            }),
                         );
 
-                        const ys = tf.tensor2d(
-                            actualData[key].map((val) => [
-                                normalize(val, outputParams.outputMin, outputParams.outputMax)
-                            ])
-                        );
+                        const ys = tf.tensor2d(actualData[key].map((val) => [normalize(val, outputParams.outputMin, outputParams.outputMax)]));
 
                         const preds = model.predict(xs) as tf.Tensor;
 
@@ -160,12 +151,10 @@ export default function PredictModels({ models, normalizationParams, transaction
                     });
 
                     savePredictionToDB(prediction, key, newMetrics[key].mse, newMetrics[key].r2);
-
                 } catch (error) {
                     console.error(`Error processing model ${key}:`, error);
                 }
             });
-
 
             if (auth.user && auth.role === 'user') {
                 saveRiwayatUser(
@@ -186,7 +175,7 @@ export default function PredictModels({ models, normalizationParams, transaction
                 text: 'Gagal Melakukan prediksi, ini mungkin kesalahan akibat train model yang salah. mohon ulangi sekali lagi',
                 status: true,
             });
-            setIsErrorModel(true)
+            setIsErrorModel(true);
         }
     };
 
@@ -204,12 +193,7 @@ export default function PredictModels({ models, normalizationParams, transaction
     };
     return (
         <div className={'rounded-lg border bg-white p-6 shadow'}>
-            <Toast
-            open={isErrorModel}
-            onOpenChange={setIsErrorModel}
-            title='Terjadi Kesalahan Prediksi'
-            description={errorModel.text}
-            />
+            <Toast open={isErrorModel} onOpenChange={setIsErrorModel} title="Terjadi Kesalahan Prediksi" description={errorModel.text} />
             <h3 className="mb-4 text-lg font-semibold">Prediksi 4 Jenis Rumput Laut</h3>
             <div className={cn('grid grid-cols-1 gap-4', className)}>
                 <form onSubmit={predictAll} className="col-span-1">
@@ -296,8 +280,8 @@ const PredictionCard = ({
     mse: number | null;
     r2: number | null;
 }) => (
-    <div className="rounded-lg bg-green-50 p-4">
-        <h4 className="font-medium text-green-800">{title}</h4>
+    <div className="rounded-lg bg-blue-50 p-4">
+        <h4 className="font-medium text-blue-800">{title}</h4>
         <p className="mt-2 text-2xl font-bold">
             {value?.toFixed(2)} {unit}
         </p>

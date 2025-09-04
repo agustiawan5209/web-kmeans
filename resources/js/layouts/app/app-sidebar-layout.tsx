@@ -67,8 +67,8 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWi
             {/* Sidebar */}
             <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-gray-200 bg-white shadow-lg lg:flex">
                 <div className="flex h-20 items-center border-b border-gray-200 px-6">
-                    <Heart className="h-10 w-10 text-green-600" />
-                    <span className="ml-3 truncate text-2xl font-extrabold text-green-700">Rekomendasi Sehat</span>
+                    <Heart className="h-10 w-10 text-blue-600" />
+                    <span className="ml-3 truncate text-2xl font-extrabold text-blue-700">Rekomendasi Sehat</span>
                 </div>
                 <nav className="flex-1 overflow-y-auto px-4 py-6">
                     <ul className="space-y-2">
@@ -86,7 +86,7 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWi
                                         className={`flex w-full items-center rounded-lg px-4 py-3 text-base font-semibold transition-colors ${
                                             isActive
                                                 ? 'bg-orange-100 text-orange-700 shadow-md'
-                                                : 'text-gray-700 hover:bg-green-100 hover:text-green-700'
+                                                : 'text-gray-700 hover:bg-blue-100 hover:text-blue-700'
                                         }`}
                                     />
                                 </li>

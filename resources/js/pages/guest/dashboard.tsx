@@ -99,9 +99,9 @@ export default function GuestDashboard({ baseJenisRumputLaut, totalDataMakanan, 
                                         <div>
                                             <p className="text-sm text-gray-500">{stat.title}</p>
                                             <p className="mt-1 text-2xl font-semibold">{stat.value}</p>
-                                            <p className="mt-1 text-xs text-green-500">{stat.change}</p>
+                                            <p className="mt-1 text-xs text-blue-500">{stat.change}</p>
                                         </div>
-                                        <div className="rounded-full bg-green-50 p-2 text-green-500">{stat.icon}</div>
+                                        <div className="rounded-full bg-blue-50 p-2 text-blue-500">{stat.icon}</div>
                                     </div>
                                 </motion.div>
                             ))}
@@ -128,10 +128,10 @@ export default function GuestDashboard({ baseJenisRumputLaut, totalDataMakanan, 
                     <motion.div className="mx-auto h-auto max-w-7xl px-4" variants={staggerContainer} initial="initial" animate="animate">
                         <motion.h1 variants={fadeInUp} className="mb-6 text-2xl leading-tight font-bold text-gray-900 md:text-2xl">
                             Sistem Prediksi
-                            <span className="text-teal-600"> Makanan Rumput Laut</span>
+                            <span className="text-blue-600"> Makanan Rumput Laut</span>
                         </motion.h1>
                         <motion.p variants={fadeInUp} className="mb-8 text-base leading-relaxed text-gray-600 md:text-2xl">
-                            Didukung oleh <span className="font-semibold text-teal-700">K-means</span> &{' '}
+                            Didukung oleh <span className="font-semibold text-blue-700">K-means</span> &{' '}
                             <span className="font-semibold text-blue-700">Multiple Linear Regression</span> Models
                         </motion.p>
                         <motion.p variants={fadeInUp} className="mx-auto mb-10 max-w-2xl text-lg text-gray-500">
@@ -140,13 +140,13 @@ export default function GuestDashboard({ baseJenisRumputLaut, totalDataMakanan, 
                         </motion.p>
                         <motion.div variants={fadeInUp} className="flex flex-col justify-center gap-4 sm:flex-row">
                             <Link href={route('user.form.prediksi')}>
-                                <Button size="lg" className="bg-teal-600 px-8 py-3 text-white hover:bg-teal-700">
+                                <Button size="lg" className="bg-blue-600 px-8 py-3 text-white hover:bg-blue-700">
                                     Mulai Prediksi
                                     <TrendingUp className="ml-2 h-5 w-5" />
                                 </Button>
                             </Link>
                             <Link href={route('user.riwayatPengguna.index')}>
-                                <Button variant="outline" size="lg" className="border-teal-200 px-8 py-3 text-teal-700 hover:bg-teal-50">
+                                <Button variant="outline" size="lg" className="border-blue-200 px-8 py-3 text-blue-700 hover:bg-blue-50">
                                     Riwayat Prediksi
                                     <Eye className="ml-2 h-5 w-5" />
                                 </Button>

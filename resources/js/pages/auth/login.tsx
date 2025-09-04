@@ -5,7 +5,6 @@ import { FormEventHandler } from 'react';
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
@@ -97,14 +96,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                 </div>
 
                 <div className="text-center text-sm text-muted-foreground">
-                   Belum Punya Akun?{' '}
+                    Belum Punya Akun?{' '}
                     <TextLink href={route('register')} tabIndex={5}>
                         Daftar
                     </TextLink>
                 </div>
             </form>
 
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
+            {status && <div className="mb-4 text-center text-sm font-medium text-blue-600">{status}</div>}
         </AuthLayout>
     );
 }

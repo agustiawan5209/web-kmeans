@@ -69,9 +69,9 @@ export default function Dashboard({ baseJenisRumputLaut, totalDataMakanan, indik
                                 <div>
                                     <p className="text-sm text-gray-500">{stat.title}</p>
                                     <p className="mt-1 text-2xl font-semibold">{stat.value}</p>
-                                    <p className="mt-1 text-xs text-green-500">{stat.change}</p>
+                                    <p className="mt-1 text-xs text-blue-500">{stat.change}</p>
                                 </div>
-                                <div className="rounded-full bg-green-50 p-2 text-green-500">{stat.icon}</div>
+                                <div className="rounded-full bg-blue-50 p-2 text-blue-500">{stat.icon}</div>
                             </div>
                         </motion.div>
                     ))}
