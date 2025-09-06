@@ -26,11 +26,11 @@ export default function FormMakananView({
             <Card>
                 <CardContent>
                     <CardHeader>
-                        <CardTitle className="text-base md:text-xl">Parameter</CardTitle>
+                        <CardTitle className="text-base md:text-xl">Indikator Dataset Makanan</CardTitle>
                     </CardHeader>
                     <CardDescription>
                         <div>
-                            <Label className="text-xs text-gray-600">label</Label>
+                            <Label className="text-xs text-gray-600">Nama Makanan</Label>
                             <Input
                                 type="text"
                                 name="label"

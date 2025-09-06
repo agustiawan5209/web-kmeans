@@ -22,10 +22,21 @@ class StoreDatasetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'label' => ['nullable', 'numeric', 'min:30'],
+            'label' => ['required', 'string'],
             'parameter' => ['required'],
             'keterangan' => ['nullable', 'string'],
-            'parameter.*.indikator_id'=> ['required', 'exists:indikators,id']
+            'parameter.*.indikator_id' => ['required', 'exists:indikators,id']
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'label.required' => 'Nama Makanan wajib diisi',
+            'label.string' => 'Nama Makanan harus berupa string',
+            'parameter.required' => 'Parameter wajib diisi',
+            'keterangan.string' => 'Keterangan harus berupa string',
+            'parameter.*.indikator_id.required' => 'Indikator wajib diisi',
+            'parameter.*.indikator_id.exists' => 'Indikator tidak ditemukan',
         ];
     }
 }

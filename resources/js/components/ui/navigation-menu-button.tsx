@@ -30,11 +30,11 @@ const NavigationButtons = ({
                     'rounded-xl shadow-sm',
                     isActive
                         ? 'bg-primary text-white shadow-md'
-                        : 'bg-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground hover:shadow',
+                        : 'bg-transparent text-muted-foreground hover:bg-secondary hover:text-secondary-foreground hover:shadow',
                 )}
             >
                 {Icon && <Icon />}
-                <span className="truncate font-medium tracking-wide">{title}</span>
+                <span className="truncate text-sm font-medium tracking-wide">{title}</span>
             </div>
         </Link>
     );
@@ -46,7 +46,7 @@ const sidebarMenuButtonVariants = cva(
         variants: {
             variant: {
                 default: '',
-                outline: 'bg-background border border-sidebar-border shadow hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+                outline: 'bg-background border border-sidebar-border shadow hover:bg-sidebar-secondary hover:text-sidebar-secondary-foreground',
             },
             size: {
                 default: 'h-10 text-base',

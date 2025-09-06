@@ -86,7 +86,7 @@ export default function PredictModels({ models, normalizationParams, transaction
         return denormalizedValue;
     };
     /**
-     * Prediksi untuk setiap jenis rumput laut.
+     * Rekomendasiuntuk setiap jenis rumput laut.
      *
      * @description
      * Fungsi ini akan memprediksi nilai dari setiap jenis rumput laut
@@ -194,13 +194,13 @@ export default function PredictModels({ models, normalizationParams, transaction
     return (
         <div className={'rounded-lg border bg-white p-6 shadow'}>
             <Toast open={isErrorModel} onOpenChange={setIsErrorModel} title="Terjadi Kesalahan Prediksi" description={errorModel.text} />
-            <h3 className="mb-4 text-lg font-semibold">Prediksi 4 Jenis Rumput Laut</h3>
+            <h3 className="mb-4 text-lg font-semibold">Rekomendasi4 Jenis Rumput Laut</h3>
             <div className={cn('grid grid-cols-1 gap-4', className)}>
                 <form onSubmit={predictAll} className="col-span-1">
                     <FormMakanan parameter={parameter} indikator={indikator} handleChange={handleChange} />
 
                     <Button type="submit" variant={'default'} className="mt-4 w-full">
-                        Prediksi Semua
+                        RekomendasiSemua
                     </Button>
                 </form>
                 <div className="col-span-1">

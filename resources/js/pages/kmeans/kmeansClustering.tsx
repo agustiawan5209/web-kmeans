@@ -1,12 +1,12 @@
 // components/KMeansClustering.tsx
-import { ClusterStats, FoodData, ScaledFoodData } from '@/types';
+import KlusterFood from '@/components/klusterFood';
+import { ClusterStats, FoodData, ResultFoodData, ScaledFoodData } from '@/types';
 import { KMeansCalculator } from '@/utils/kmeansCalculator';
 import { saveModelToDB } from '@/utils/modelstorage';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BarChart3, Calculator, Loader2, PieChart, TrendingUp, Users } from 'lucide-react';
+import { BarChart3, Calculator, Loader2, PieChart, TrendingUp } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import ClusterVisualization from './ClusterVisualization';
-import FoodTable from './foodTable';
 
 interface Props {
     foodData: FoodData[];
@@ -17,7 +17,8 @@ const KMeansClustering: React.FC<Props> = ({ foodData }) => {
     const [clusterStats, setClusterStats] = useState<ClusterStats>({});
     const [isCalculating, setIsCalculating] = useState(false);
     const [selectedCluster, setSelectedCluster] = useState<string | null>(null);
-
+    const clusterNames = ['Pagi', 'Siang', 'Malam'];
+    const [dataMakanan, setDataMakanan] = useState<ResultFoodData[]>([]);
     useEffect(() => {
         if (foodData.length > 0) {
             calculateClusters();
@@ -31,7 +32,9 @@ const KMeansClustering: React.FC<Props> = ({ foodData }) => {
             const calculator = new KMeansCalculator();
             const result = calculator.performKMeans(foodData);
             const stats = calculator.calculateClusterStats(result);
-
+            const valueMakanan: ResultFoodData[] = result.map((item) => {
+                return { ...item, clusterResult: clusterNames[item.clusterResult?.cluster || 0] };
+            });
             try {
                 const response = await saveModelToDB(result, 'kmeans_nutrition_model');
                 if (response.success) {
@@ -40,6 +43,7 @@ const KMeansClustering: React.FC<Props> = ({ foodData }) => {
             } catch (error) {
                 console.error('Error during clustering calculation:', error);
             }
+            setDataMakanan(valueMakanan);
             setClusteredData(result);
             setClusterStats(stats);
             setIsCalculating(false);
@@ -209,21 +213,12 @@ const KMeansClustering: React.FC<Props> = ({ foodData }) => {
 
             {/* Visualization Section */}
             <motion.div variants={itemVariants}>
-                <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg">
-                    <h3 className="mb-6 flex items-center text-xl font-semibold text-gray-900">
-                        <Users className="mr-2 h-6 w-6 text-blue-600" />
-                        Visualisasi Kluster
-                    </h3>
-                    <ClusterVisualization data={clusteredData} />
-                </div>
+                <ClusterVisualization data={clusteredData} />
             </motion.div>
 
             {/* Food Table Section */}
             <motion.div variants={itemVariants}>
-                <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg">
-                    <h3 className="mb-6 text-xl font-semibold text-gray-900">Tabel Data Makanan</h3>
-                    <FoodTable data={clusteredData} />
-                </div>
+                <KlusterFood data={dataMakanan} />
             </motion.div>
         </motion.div>
     );

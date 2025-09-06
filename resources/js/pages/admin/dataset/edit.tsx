@@ -1,8 +1,4 @@
-import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, DatasetTypes, IndikatorTypes } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
@@ -35,7 +31,7 @@ interface PropsDatasetView {
     breadcrumb: BreadcrumbItem[];
     indikator: IndikatorTypes[];
     titlePage?: string;
-    hasilMakanan?: DatasetTypes; // Add hasilMakanan prop for edit functionality
+    dataset?: DatasetTypes; // Add dataset prop for edit functionality
 }
 const daftarBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
@@ -44,15 +40,17 @@ const opsiCahaya = ['Sangat Cerah', 'Cerah', 'Berawan', 'Mendung', 'Gelap'];
 const opsiArus = ['Sangat Kuat', 'Kuat', 'Siang', 'Lemah', 'Sangat Lemah'];
 const opsiNutrisi = ['Melimpah', 'Cukup', 'Terbatas', 'Sangat Sedikit'];
 
-export default function FormDatasetView({ breadcrumb, indikator, titlePage, hasilMakanan }: PropsDatasetView) {
+export default function FormDatasetView({ breadcrumb, indikator, titlePage, dataset }: PropsDatasetView) {
     const breadcrumbs: BreadcrumbItem[] = breadcrumb ? breadcrumb.map((item) => ({ title: item.title, href: item.href })) : [];
-   const { data, setData, put, processing, errors } = useForm<Dataset>({
-    label: hasilMakanan?.label || '',
-    parameter: hasilMakanan?.parameter || indikator.map((_, index) => ({
-        indikator_id: indikator[index].id,
-        nilai: null,
-    })),
-});
+    const { data, setData, put, processing, errors } = useForm<Dataset>({
+        label: dataset?.label || '',
+        parameter:
+            dataset?.parameter ||
+            indikator.map((_, index) => ({
+                indikator_id: indikator[index].id,
+                nilai: null,
+            })),
+    });
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
@@ -106,7 +104,7 @@ export default function FormDatasetView({ breadcrumb, indikator, titlePage, hasi
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Use put instead of post for update
-        put(route('admin.hasilMakanan.update', { hasilMakanan: hasilMakanan?.id }), {
+        put(route('admin.dataset.update', { dataset: dataset?.id }), {
             onError: (err) => {
                 console.log(err);
             },
@@ -119,7 +117,13 @@ export default function FormDatasetView({ breadcrumb, indikator, titlePage, hasi
             <div className="mx-auto max-w-7xl rounded-xl border border-gray-100 bg-white p-6 shadow">
                 <h1 className="mb-6 text-center text-xl font-semibold text-primary">Edit Dataset Makanan</h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <FormMakananView data={data} errors={errors} indikator={indikator} handleChange={handleChange} handleSelectChange={handleSelectChange} />
+                    <FormMakananView
+                        data={data}
+                        errors={errors}
+                        indikator={indikator}
+                        handleChange={handleChange}
+                        handleSelectChange={handleSelectChange}
+                    />
                     <div className="flex justify-end">
                         <Button type="submit" variant={'default'}>
                             {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}

@@ -43,7 +43,7 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
                         <div className="mx-auto max-w-7xl">
                             {/* Header */}
                             <motion.div initial={{ y: -20 }} animate={{ y: 0 }} transition={{ duration: 0.5 }} className="mb-10 text-center">
-                                <h1 className="mb-2 text-3xl font-bold text-gray-900">Detail Prediksi Makanan Rumput Laut Pengguna</h1>
+                                <h1 className="mb-2 text-3xl font-bold text-gray-900">Detail RekomendasiMakanan Rumput Laut Pengguna</h1>
                             </motion.div>
                             {/* Summary Cards */}
                             <motion.div
@@ -71,7 +71,7 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
                                     </div>
                                 </div>
                                 <div className="overflow-hidden rounded-xl border-l-4 border-purple-500 bg-white p-6 shadow-md">
-                                    <h3 className="text-sm font-medium text-gray-500">Hasil Prediksi Makanan Jenis Rumput Laut</h3>
+                                    <h3 className="text-sm font-medium text-gray-500">Hasil RekomendasiMakanan Jenis Rumput Laut</h3>
                                     <div className="mt-4">
                                         {Object.entries(riwayatPengguna.model).map(([key, value]) => (
                                             <div key={key} className="flex justify-between py-1">

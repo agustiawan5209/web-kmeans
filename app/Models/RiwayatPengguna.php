@@ -27,4 +27,9 @@ class RiwayatPengguna extends Model
         // 'kluster' => 'json',
         'created_at' => 'datetime'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

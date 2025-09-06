@@ -97,7 +97,7 @@ export default function FormDatasetView({ breadcrumb, indikator, titlePage }: Pr
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Tambahkan logika submit di sini
-        post(route('admin.hasilMakanan.store'), {
+        post(route('admin.dataset.store'), {
             onError: (err) => {
                 console.log(err);
             },

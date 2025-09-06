@@ -16,8 +16,8 @@ class RiwayatPenggunaController extends Controller
             'href' => '/dashboard',
         ],
         [
-            'title' => 'hasil dataset',
-            'href' => '/admin/hasil-dataset/',
+            'title' => 'riwayat pengguna',
+            'href' => '/admin/riwayat/',
         ],
     ];
     /**
@@ -26,7 +26,7 @@ class RiwayatPenggunaController extends Controller
     public function index()
     {
         return Inertia::render("admin/riwayatPengguna/index", [
-            "riwayatPengguna" => RiwayatPengguna::paginate(10),
+            "riwayatPengguna" => RiwayatPengguna::with(['user'])->paginate(10),
             'breadcrumb' => self::BASE_BREADCRUMB,
         ]);
     }
@@ -62,9 +62,15 @@ class RiwayatPenggunaController extends Controller
 
     public function show(RiwayatPengguna $riwayatPengguna)
     {
+        $riwayatPengguna->load(['user']);
         return Inertia::render("admin/riwayatPengguna/show", [
             "riwayatPengguna" => $riwayatPengguna,
-            'breadcrumb' => self::BASE_BREADCRUMB,
+            'breadcrumb' => array_merge(self::BASE_BREADCRUMB, [
+                [
+                    'title' => 'detail',
+                    'href' => 'admin/riwayat/detail/' . $riwayatPengguna->id,
+                ]
+            ]),
         ]);
     }
 

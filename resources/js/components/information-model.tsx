@@ -16,7 +16,7 @@ const InformationModelStep = () => {
             variants={fadeIn}
             className="mx-auto h-screen max-w-7xl overflow-y-auto rounded-lg bg-white p-6 shadow-md"
         >
-            <h1 className="mb-6 text-3xl font-bold text-blue-700">Sistem Prediksi Makanan Pertanian</h1>
+            <h1 className="mb-6 text-3xl font-bold text-blue-700">Sistem RekomendasiMakanan Pertanian</h1>
 
             <p className="mb-6 text-gray-600">
                 Sistem ini menggunakan tiga pendekatan analitik data:
@@ -36,7 +36,7 @@ const InformationModelStep = () => {
                     className={`px-4 py-2 font-medium ${activeTab === 'prediction' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
                     onClick={() => setActiveTab('prediction')}
                 >
-                    Prediksi Dataset
+                    RekomendasiDataset
                 </button>
             </div>
 
@@ -96,7 +96,7 @@ const InformationModelStep = () => {
                 </motion.div>
             ) : (
                 <motion.div variants={fadeIn}>
-                    <h2 className="mb-4 text-2xl font-semibold text-blue-600">Tata Cara Prediksi Dataset</h2>
+                    <h2 className="mb-4 text-2xl font-semibold text-blue-600">Tata Cara RekomendasiDataset</h2>
 
                     <div className="space-y-6">
                         <StepCard

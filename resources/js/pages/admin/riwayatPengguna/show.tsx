@@ -2,7 +2,7 @@ import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, IndikatorTypes } from '@/types';
 import { Head } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 const formatNumber = (num: number) => {
     return new Intl.NumberFormat('id-ID').format(num);
@@ -22,30 +22,72 @@ interface HarvestDetailProps {
     riwayatPengguna: {
         id: number;
         user: { name: string; email: string; alamat: string };
-        model: any;
-        parameter: any;
+        nama: string;
+        jenkel: string;
+        usia: string;
+        berat_badan: string;
+        tinggi_badan: string;
+        tekanan_sistolik: string;
+        tekanan_diastolik: string;
+        riwayat_penyakit: string;
+        alergi_makanan: string;
+        hipertensi: string;
     };
     breadcrumb: BreadcrumbItem[];
     indikator: IndikatorTypes[];
     titlePage: string;
 }
 
-interface ParameterTypes {
-    indikator: number | string;
-    nilai: number | string;
+interface HypertensionClassification {
+    type: string;
+    color: string;
+    bgColor: string;
 }
+
 export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikator, titlePage }: HarvestDetailProps) {
     const breadcrumbs: BreadcrumbItem[] = useMemo(
         () => (breadcrumb ? breadcrumb.map((item) => ({ title: item.title, href: item.href })) : []),
         [breadcrumb],
     );
-    const [jenisRumputLaut, setJenisRumputLut] = useState<{ nama: string; jumlah: number }>();
-    const parameter: ParameterTypes[] = riwayatPengguna.parameter
-        ? riwayatPengguna.parameter.map((item: any) => ({
-              indikator: item.indikator,
-              nilai: item.nilai ?? '', // add a default value if nilai is null
-          }))
-        : [];
+    const classifyHypertension = (sistolik: number, diastolik: number): HypertensionClassification => {
+        if (sistolik >= 180 && diastolik >= 120) {
+            return { type: 'Hipertensi Krisis', color: 'text-red-600', bgColor: 'bg-red-100' };
+        } else if (sistolik >= 140 && diastolik >= 90) {
+            return { type: 'Hipertensi Tahap 2', color: 'text-orange-600', bgColor: 'bg-orange-100' };
+        } else if (sistolik >= 130 && diastolik >= 80) {
+            return { type: 'Hipertensi Tahap 1', color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
+        } else if (sistolik >= 120 && diastolik < 80) {
+            return { type: 'Prahipertensi', color: 'text-blue-600', bgColor: 'bg-blue-100' };
+        } else {
+            return { type: 'Normal', color: 'text-green-600', bgColor: 'bg-green-100' };
+        }
+    };
+
+    const calculateBMI = (berat: number, tinggi: number): { value: number; category: string; color: string } => {
+        // Konversi tinggi dari cm ke m
+        const heightInMeter = tinggi / 100;
+        const bmi = berat / (heightInMeter * heightInMeter);
+
+        let category = '';
+        let color = '';
+
+        if (bmi < 18.5) {
+            category = 'Kekurangan berat badan';
+            color = 'text-blue-600';
+        } else if (bmi >= 18.5 && bmi < 25) {
+            category = 'Normal (ideal)';
+            color = 'text-green-600';
+        } else if (bmi >= 25 && bmi < 30) {
+            category = 'Kelebihan berat badan';
+            color = 'text-yellow-600';
+        } else {
+            category = 'Obesitas';
+            color = 'text-red-600';
+        }
+
+        return { value: parseFloat(bmi.toFixed(1)), category, color };
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={titlePage ?? 'Detail'} />
@@ -53,7 +95,7 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
                 <div className="mx-auto max-w-7xl">
                     {/* Header */}
                     <motion.div initial={{ y: -20 }} animate={{ y: 0 }} transition={{ duration: 0.5 }} className="mb-10 text-center">
-                        <h1 className="mb-2 text-3xl font-bold text-gray-900">Detail Prediksi Makanan Rumput Laut Pengguna</h1>
+                        <h1 className="mb-2 text-3xl font-bold text-gray-900">Detail Data Rekomendasi Makanan</h1>
                     </motion.div>
                     {/* Summary Cards */}
                     <motion.div
@@ -80,17 +122,6 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
                                 </div>
                             </div>
                         </div>
-                        <div className="overflow-hidden rounded-xl border-l-4 border-purple-500 bg-white p-6 shadow-md">
-                            <h3 className="text-sm font-medium text-gray-500">Hasil Prediksi Makanan Jenis Rumput Laut</h3>
-                            <div className="mt-4">
-                                {Object.entries(riwayatPengguna.model).map(([key, value]) => (
-                                    <div key={key} className="flex justify-between py-1">
-                                        <span className="text-sm text-gray-600">{key}</span>
-                                        <span className="text-sm font-medium">{value}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
                     </motion.div>
 
                     {/* Detailed Parameters */}
@@ -100,45 +131,111 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
                         transition={{ delay: 0.4, duration: 0.5 }}
                         className="mb-10 overflow-hidden rounded-xl bg-white shadow-md"
                     >
-                        <div className="border-b border-gray-200 px-6 py-5">
-                            <h3 className="text-lg font-medium text-gray-900">Parameter Nutrisi Rekomendasi Makanan</h3>
-                        </div>
-                        <div className="divide-y divide-gray-200">
-                            <div className="overflow-hidden border-l-4 border-chart-4 bg-white p-6 shadow-md">
-                                <h3 className="text-sm font-medium text-gray-500">Detail Tanaman</h3>
-                                <div className="mt-4 grid grid-cols-3 gap-7 space-y-3">
-                                    {parameter.map((item, index) => (
-                                        <div key={index} className="flex flex-col justify-between border-b-2">
-                                            <span className="text-base font-medium text-gray-800">{item.indikator}</span>
-                                            <span className="text-base font-light">{item.nilai}</span>
+                        <div className="p-6">
+                            <div className="mb-6 flex items-center justify-between">
+                                <h2 className="text-2xl font-bold text-gray-800">Detail Data Kesehatan</h2>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                <div className="space-y-6">
+                                    <div>
+                                        <h3 className="mb-1 text-sm font-medium text-gray-500">Nama Lengkap</h3>
+                                        <p className="text-lg font-semibold">{riwayatPengguna.nama}</p>
+                                    </div>
+
+                                    <div>
+                                        <h3 className="mb-1 text-sm font-medium text-gray-500">Jenis Kelamin</h3>
+                                        <p className="text-lg font-semibold">{riwayatPengguna.jenkel}</p>
+                                    </div>
+
+                                    <div>
+                                        <h3 className="mb-1 text-sm font-medium text-gray-500">Usia</h3>
+                                        <p className="text-lg font-semibold">{riwayatPengguna.usia} tahun</p>
+                                    </div>
+
+                                    <div>
+                                        <h3 className="mb-1 text-sm font-medium text-gray-500">Berat & Tinggi Badan</h3>
+                                        <p className="text-lg font-semibold">
+                                            {riwayatPengguna.berat_badan} kg / {riwayatPengguna.tinggi_badan} cm
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-6">
+                                    <div>
+                                        <h3 className="mb-1 text-sm font-medium text-gray-500">Tekanan Darah</h3>
+                                        <p className="text-lg font-semibold">
+                                            {riwayatPengguna.tekanan_sistolik} / {riwayatPengguna.tekanan_diastolik} mmHg
+                                        </p>
+                                        {riwayatPengguna.tekanan_sistolik && riwayatPengguna.tekanan_diastolik && (
+                                            <motion.span
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                className={`mt-2 inline-block rounded-full px-3 py-1 text-sm font-medium ${
+                                                    classifyHypertension(
+                                                        parseInt(riwayatPengguna.tekanan_sistolik) || 0,
+                                                        parseInt(riwayatPengguna.tekanan_diastolik) || 0,
+                                                    ).bgColor
+                                                } ${
+                                                    classifyHypertension(
+                                                        parseInt(riwayatPengguna.tekanan_sistolik) || 0,
+                                                        parseInt(riwayatPengguna.tekanan_diastolik) || 0,
+                                                    ).color
+                                                }`}
+                                            >
+                                                {riwayatPengguna.hipertensi}
+                                            </motion.span>
+                                        )}
+                                    </div>
+
+                                    {riwayatPengguna.berat_badan && riwayatPengguna.tinggi_badan && (
+                                        <div>
+                                            <h3 className="mb-1 text-sm font-medium text-gray-500">Indeks Massa Tubuh (BMI)</h3>
+                                            {calculateBMI(
+                                                parseFloat(riwayatPengguna.berat_badan) || 0,
+                                                parseFloat(riwayatPengguna.tinggi_badan) || 0,
+                                            ) && (
+                                                <>
+                                                    <p className="text-lg font-semibold">
+                                                        {
+                                                            calculateBMI(
+                                                                parseFloat(riwayatPengguna.berat_badan) || 0,
+                                                                parseFloat(riwayatPengguna.tinggi_badan) || 0,
+                                                            ).value
+                                                        }
+                                                    </p>
+                                                    <p
+                                                        className={
+                                                            calculateBMI(
+                                                                parseFloat(riwayatPengguna.berat_badan) || 0,
+                                                                parseFloat(riwayatPengguna.tinggi_badan) || 0,
+                                                            ).color
+                                                        }
+                                                    >
+                                                        {
+                                                            calculateBMI(
+                                                                parseFloat(riwayatPengguna.berat_badan) || 0,
+                                                                parseFloat(riwayatPengguna.tinggi_badan) || 0,
+                                                            ).category
+                                                        }
+                                                    </p>
+                                                </>
+                                            )}
                                         </div>
-                                    ))}
+                                    )}
+
+                                    <div>
+                                        <h3 className="mb-1 text-sm font-medium text-gray-500">Riwayat Penyakit</h3>
+                                        <p className="text-lg font-semibold">{riwayatPengguna.riwayat_penyakit || 'Tidak ada riwayat penyakit'}</p>
+                                    </div>
+
+                                    <div>
+                                        <h3 className="mb-1 text-sm font-medium text-gray-500">Alergi Makanan</h3>
+                                        <p className="text-lg font-semibold">{riwayatPengguna.alergi_makanan || 'Tidak ada alergi makanan'}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
-
-                    {/* Visualization Placeholder */}
-                    {/* <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.6, duration: 0.5 }}
-                        className="mb-10 overflow-hidden rounded-xl bg-white p-6 shadow-md"
-                    >
-                        <h3 className="mb-4 text-lg font-medium text-gray-900">Visualisasi Data</h3>
-                        <div className="flex h-64 items-center justify-center rounded-lg bg-gray-100">
-                            <p className="text-gray-500">Grafik produksi akan ditampilkan di sini</p>
-                        </div>
-                    </motion.div> */}
-
-                    {/* Footer */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.8, duration: 0.5 }}
-                        className="text-center text-sm text-gray-500"
-                    >
-                        <p>Terakhir diperbarui: {new Date().toLocaleDateString('id-ID')}</p>
                     </motion.div>
                 </div>
             </motion.div>

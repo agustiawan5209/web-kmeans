@@ -2,9 +2,9 @@
 import { ScaledFoodData } from '@/types';
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Title, Tooltip } from 'chart.js';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BarChart3, ChevronDown, ChevronUp, PieChart, ScatterChart, Target } from 'lucide-react';
+import { BarChart3, ChevronDown, ChevronUp, PieChart, Target } from 'lucide-react';
 import React from 'react';
-import { Bar, Doughnut, Scatter } from 'react-chartjs-2';
+import { Bar, Doughnut } from 'react-chartjs-2';
 
 // Register ChartJS components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement);
@@ -14,14 +14,14 @@ interface Props {
 }
 
 const ClusterVisualization: React.FC<Props> = ({ data }) => {
-    const [activeChart, setActiveChart] = React.useState<'scatter' | 'bar' | 'doughnut'>('scatter');
+    const [activeChart, setActiveChart] = React.useState<'scatter' | 'bar' | 'doughnut'>('bar');
     const [isExpanded, setIsExpanded] = React.useState(false);
 
     const clusterColors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
     const clusterNames = ['Pagi', 'Siang', 'Malam'];
-    const projectTo2D = (values: number[]) => {
+    const projectTo2D = (values: number[], distance: number) => {
         // Simple projection untuk visualisasi
-        const x = values[0] * 100 + values[2] * 50; // Kalori + Lemak
+        const x = distance + values[0]; // Kalori + Lemak
         const y = values[3] * 100 + values[1] * 50; // Karbohidrat + Protein
         return { x, y };
     };
@@ -29,15 +29,15 @@ const ClusterVisualization: React.FC<Props> = ({ data }) => {
     const scatterData = {
         datasets: data.map((item, index) => {
             const cluster = item.clusterResult?.cluster || 0;
-            const point = projectTo2D(item.scaledValues);
             const distance = item.clusterResult?.distance || 0;
+            const point = projectTo2D(item.scaledValues, distance);
 
             return {
                 label: `${item.MENU} (${clusterNames[cluster]})`,
                 data: [
                     {
-                        x: distance,
-                        y: point.x,
+                        x: point.x,
+                        y: distance,
                     },
                 ],
                 backgroundColor: clusterColors[cluster],
@@ -207,7 +207,7 @@ const ClusterVisualization: React.FC<Props> = ({ data }) => {
     };
 
     const chartTabs = [
-        { id: 'scatter' as const, label: 'Scatter Plot', icon: ScatterChart },
+        // { id: 'scatter' as const, label: 'Scatter Plot', icon: ScatterChart },
         { id: 'bar' as const, label: 'Bar Chart', icon: BarChart3 },
         { id: 'doughnut' as const, label: 'Doughnut', icon: PieChart },
     ];
@@ -266,7 +266,7 @@ const ClusterVisualization: React.FC<Props> = ({ data }) => {
                     transition={{ duration: 0.3 }}
                     className={`relative ${isExpanded ? 'h-96' : 'h-64'} mb-4`}
                 >
-                    {activeChart === 'scatter' && <Scatter data={scatterData} options={scatterOptions} />}
+                    {/* {activeChart === 'scatter' && <Scatter data={scatterData} options={scatterOptions} />} */}
                     {activeChart === 'bar' && <Bar data={barData} options={barOptions} />}
                     {activeChart === 'doughnut' && <Doughnut data={doughnutData} options={doughnutOptions} />}
                 </motion.div>
@@ -290,7 +290,7 @@ const ClusterVisualization: React.FC<Props> = ({ data }) => {
             </div>
 
             {/* Info Panel */}
-            <motion.div
+            {/* <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
@@ -300,7 +300,7 @@ const ClusterVisualization: React.FC<Props> = ({ data }) => {
                     <strong>Tip:</strong> Gunakan visualisasi ini untuk memahami pola distribusi nutrisi dan karakteristik masing-masing kluster
                     makanan.
                 </p>
-            </motion.div>
+            </motion.div> */}
         </motion.div>
     );
 };

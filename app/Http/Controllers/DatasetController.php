@@ -63,12 +63,7 @@ class DatasetController extends Controller
     public function store(StoreDatasetRequest $request)
     {
         $data =  [
-            "bulan" => $request->bulan,
-            "desa" => $request->desa,
-            "kecamatan" => $request->kecamatan,
-            "tahun" => $request->tahun,
-            "total_dataset" => $request->total_dataset,
-            "jenisRumputLaut" =>  $request->jenisRumputLaut,
+            "label" =>  $request->label,
             "parameter" => $request->parameter,
             "keterangan" => "TEST",
         ];
@@ -119,12 +114,7 @@ class DatasetController extends Controller
     public function update(UpdateDatasetRequest $request, Dataset $dataset)
     {
         $data =  [
-            "bulan" => $request->bulan,
-            "tahun" => $request->tahun,
-            "desa" => $request->desa,
-            "kecamatan" => $request->kecamatan,
-            "total_dataset" => $request->total_dataset,
-            "jenisRumputLaut" =>  $request->jenisRumputLaut,
+            "label" =>  $request->label,
             "parameter" => $request->parameter,
             "keterangan" => "TEST",
         ];

@@ -21,9 +21,7 @@ class PredictionController extends Controller
     {
         return Inertia::render('prediction/index', [
             'breadcrumb' => self::BASE_BREADCRUMS,
-            'titlePage' => 'Prediksi Makanan',
+            'titlePage' => 'RekomendasiMakanan',
         ]);
     }
-
-
 }
