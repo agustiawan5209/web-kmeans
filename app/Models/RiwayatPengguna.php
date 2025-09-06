@@ -10,15 +10,21 @@ class RiwayatPengguna extends Model
     protected $table = "riwayat_penggunas";
     protected $fillable = [
         'user_id',
-        'model',
-        'user',
-        'parameter',
+        // 'kluster',
+        'nama',
+        'jenkel',
+        'usia',
+        'berat_badan',
+        'tinggi_badan',
+        'tekanan_sistolik',
+        'tekanan_diastolik',
+        'riwayat_penyakit',
+        'alergi_makanan',
+        'hipertensi',
     ];
 
     protected $casts = [
-        'model'=> 'json',
-        'user'=> 'json',
-        'parameter'=> 'json',
-        'created_at'=> 'datetime'
+        // 'kluster' => 'json',
+        'created_at' => 'datetime'
     ];
 }

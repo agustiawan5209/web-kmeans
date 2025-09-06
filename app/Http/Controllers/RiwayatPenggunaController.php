@@ -38,23 +38,33 @@ class RiwayatPenggunaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "model" => "required",
-            "parameter" => "required",
+            "nama" => "required",
+            "jenkel" => "required",
         ]);
         RiwayatPengguna::create([
             "user_id" => Auth::user()->id,
             "user" => Auth::user(),
-            "model" => $request->model,
-            "parameter" => $request->parameter,
+            // "kluster" => $request->kluster,
+            "nama" => $request->nama,
+            "jenkel" => $request->jenkel,
+            "usia" => $request->usia,
+            "berat_badan" => $request->beratBadan,
+            "tinggi_badan" => $request->tinggiBadan,
+            "tekanan_sistolik" => $request->tekananSistolik,
+            "tekanan_diastolik" => $request->tekananDiastolik,
+            "riwayat_penyakit" => $request->riwayatPenyakit,
+            "alergi_makanan" => $request->alergiMakanan,
+            "hipertensi" => $request->hipertensi,
         ]);
 
-        return response()->json("Berhasil", 200);
+        return redirect()->route('user.form.view')->with('success', 'Data Berhasil Disimpan!');
     }
 
-    public function show(RiwayatPengguna $riwayatPengguna){
+    public function show(RiwayatPengguna $riwayatPengguna)
+    {
         return Inertia::render("admin/riwayatPengguna/show", [
-            "riwayatPengguna"=> $riwayatPengguna,
-             'breadcrumb' => self::BASE_BREADCRUMB,
+            "riwayatPengguna" => $riwayatPengguna,
+            'breadcrumb' => self::BASE_BREADCRUMB,
         ]);
     }
 

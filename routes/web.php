@@ -9,6 +9,7 @@ use App\Http\Controllers\ModelStorageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\DatasetController;
 use App\Http\Controllers\Guest\DashboardController as GuestDashboardController;
+use App\Http\Controllers\Guest\KlusterController;
 use App\Http\Controllers\Guest\RiwayatPrediksiController;
 use App\Http\Controllers\RiwayatPenggunaController;
 
@@ -68,8 +69,9 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
 
         Route::get('user/dashboard', [GuestDashboardController::class, 'dashboard'])->name('dashboard');
 
-        Route::controller(WebPageController::class)->group(function () {
-            Route::get('/form/prediksi', 'index')->name('form.prediksi');
+        Route::controller(KlusterController::class)->group(function () {
+            Route::get('/form/rekomendasi', 'index')->name('form.prediksi');
+            Route::get('/hasil/rekomendasi', 'create')->name('form.view');
         });
 
         // Riwayat Pengguna

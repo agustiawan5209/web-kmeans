@@ -22,19 +22,10 @@ class DashboardController extends Controller
         $dataset = Dataset::all();
         $kriteria = Indikator::orderBy('id', 'asc')->get();
 
-        $transactionY = $dataset->map(function ($item) use ($kriteria) {
-            $jenis = $item->jenisRumputLaut;
-            $data = [];
-            foreach ($jenis as $key => $value) {
-                $data[$value['nama']] = $value['jumlah'];
-            }
-            return $data;
-        });
         return Inertia::render('guest/dashboard', [
             'baseJenisRumputLaut' => self::BASE_JENISRUMPUT_LAUT,
             'totalDataMakanan' => Dataset::all()->count(),
             'indikator' => Indikator::all()->count(),
-            'transactionY' => $transactionY,
 
         ]);
     }

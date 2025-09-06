@@ -31,7 +31,7 @@ export interface SharedData {
     flash: {
         success?: string;
         error?: string;
-    }
+    };
     sidebarOpen: boolean;
     [key: string]: unknown;
 }
@@ -59,11 +59,10 @@ export interface IndikatorTypes {
     [key: string]: unknown; // This allows for additional properties...
 }
 
-
 export interface DatasetTypes {
     id: number | null;
     label: string;
-    parameter: {indikator_id: number; nilai: string | null}[];
+    parameter: { indikator_id: number; nilai: string | null }[];
     [key: string]: unknown; // This allows for additional properties...
 }
 export interface ParameterTransaction {
@@ -72,36 +71,39 @@ export interface ParameterTransaction {
 }
 // types/index.ts
 export interface FoodData {
-  MENU: string;
-  KALORI: number;
-  PROTEIN: number;
-  LEMAK: number;
-  KARBOHIDRAT: number;
-  NATRIUM: number;
-  KALIUM: number;
-  KALSIUM: number;
-  MAGNESIUM: number;
+    MENU: string;
+    KALORI: number;
+    PROTEIN: number;
+    LEMAK: number;
+    KARBOHIDRAT: number;
+    NATRIUM: number;
+    KALIUM: number;
+    KALSIUM: number;
+    MAGNESIUM: number;
 }
 
 export interface ClusterResult {
-  cluster: number;
-  distance: number;
+    cluster: number;
+    distance: number;
 }
 
 export interface ScaledFoodData extends FoodData {
-  scaledValues: number[];
-  clusterResult?: ClusterResult;
+    scaledValues: number[];
+    clusterResult?: ClusterResult;
+}
+export interface ResultFoodData extends FoodData {
+    clusterResult: string | 'Pagi' | 'Siang' | 'Malam';
 }
 
 export interface Centroids {
-  PAGI: number[];
-  SIANG: number[];
-  MALAM: number[];
+    PAGI: number[];
+    SIANG: number[];
+    MALAM: number[];
 }
 
 export interface ClusterStats {
-  [key: string]: {
-    count: number;
-    averages: Partial<FoodData>;
-  };
+    [key: string]: {
+        count: number;
+        averages: Partial<FoodData>;
+    };
 }

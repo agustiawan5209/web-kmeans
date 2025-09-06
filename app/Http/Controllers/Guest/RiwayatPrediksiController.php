@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Guest;
 
 use Inertia\Inertia;
+use App\Models\ModelStorage;
 use Illuminate\Http\Request;
 use App\Models\RiwayatPengguna;
 use Illuminate\Support\Facades\App;
@@ -13,8 +14,13 @@ class RiwayatPrediksiController extends Controller
 {
     public function index()
     {
+        $modelStorage = ModelStorage::where('model_name', 'kmeans_nutrition_model')->first();
+        if (!$modelStorage) {
+            return redirect()->route('guest.dashboard')->with('error', 'Model KMeans belum tersedia. Silakan hubungi admin.');
+        }
         return Inertia::render("guest/riwayatPengguna/index", [
-            "riwayatPengguna" => RiwayatPengguna::orderBy('id', 'desc')->where('user_id', '=', Auth::user()->id)->paginate(10),
+            "healthData" => RiwayatPengguna::orderBy('id', 'desc')->where('user_id', '=', Auth::user()->id)->get(),
+            "kluster" => $modelStorage->model_json,
         ]);
     }
 
@@ -26,7 +32,7 @@ class RiwayatPrediksiController extends Controller
         ]);
     }
 
-     /**
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(RiwayatPengguna $riwayatPengguna)

@@ -2,7 +2,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import { Database, Leaf, TrendingUp } from 'lucide-react';
+import { Database, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 // Import the default export from each file
 const breadcrumbs: BreadcrumbItem[] = [
@@ -21,7 +21,7 @@ interface DashboardViewProps {
 export default function Dashboard({ baseJenisRumputLaut, totalDataMakanan, indikator }: DashboardViewProps) {
     const stats = [
         { title: 'Total Data Makanan', value: totalDataMakanan, icon: <Database size={24} /> },
-        { title: 'Model Tersedia', value: '4', icon: <Leaf size={24} /> },
+        // { title: 'Model Tersedia', value: '4', icon: <Leaf size={24} /> },
         { title: 'Total Indikator', value: indikator, icon: <TrendingUp size={24} />, change: '+2%' },
     ];
 
@@ -53,7 +53,7 @@ export default function Dashboard({ baseJenisRumputLaut, totalDataMakanan, indik
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="space-y-6">
-                <h1 className="text-2xl font-bold text-gray-800">Dashboard Prediksi Makanan Rumput Laut</h1>
+                <h1 className="text-2xl font-bold text-gray-800">Dashboard Sistem Rekomendasi Makanan</h1>
 
                 {/* Statistik */}
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
