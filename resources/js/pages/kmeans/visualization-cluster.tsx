@@ -213,7 +213,7 @@ const KMeansClustering: React.FC<Props> = ({ foodData }) => {
 
             {/* Visualization Section */}
             <motion.div variants={itemVariants}>
-                <ClusterVisualization data={clusteredData} />
+                <ClusterVisualization data={foodData} />
             </motion.div>
 
             {/* Food Table Section */}

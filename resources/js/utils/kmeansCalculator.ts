@@ -14,9 +14,15 @@ export class KMeansCalculator {
         MALAM: [185.39, 2.69, 2.67, 40.99, 22.05, 481.22, 70.34, 31.08]
     };
 
+    // Enum untuk tipe inisialisasi centroid
+    public static readonly CentroidInitialization = {
+        CUSTOM: 'custom',
+        RANDOM: 'random',
+        KMEANS_PLUS_PLUS: 'kmeans++'
+    } as const;
+
     // Scale data menggunakan Z-score normalization
     private scaleData(data: FoodData[]): { scaledData: ScaledFoodData[], means: number[], stdDevs: number[] } {
-        // Gunakan tf.tidy untuk automatis memory management
         return tf.tidy(() => {
             const values = data.map(item => this.features.map(feature => item[feature]));
             const tensor = tf.tensor2d(values);
@@ -57,17 +63,75 @@ export class KMeansCalculator {
         });
     }
 
-    // Hitung jarak Euclidean antara centroid dan semua points (versi diperbaiki)
+    // Inisialisasi centroid secara acak dari data
+    private initializeRandomCentroids(points: tf.Tensor2D, k: number): tf.Tensor2D {
+        return tf.tidy(() => {
+            const indices: number[] = [];
+            const numPoints = points.shape[0];
+
+            // Pilih k indeks acak yang unik
+            while (indices.length < k) {
+                const randomIndex = Math.floor(Math.random() * numPoints);
+                if (!indices.includes(randomIndex)) {
+                    indices.push(randomIndex);
+                }
+            }
+
+            return points.gather(tf.tensor1d(indices, 'int32'));
+        });
+    }
+
+    // Inisialisasi centroid menggunakan algoritma K-Means++
+    private initializeKMeansPlusPlus(points: tf.Tensor2D, k: number): tf.Tensor2D {
+        return tf.tidy(() => {
+            const numPoints = points.shape[0];
+            const centroids: tf.Tensor2D[] = [];
+
+            // Pilih centroid pertama secara acak
+            const firstIndex = Math.floor(Math.random() * numPoints);
+            centroids.push(points.gather([firstIndex]));
+
+            // Pilih centroid selanjutnya berdasarkan probabilitas
+            for (let i = 1; i < k; i++) {
+                // Hitung jarak kuadrat dari setiap titik ke centroid terdekat
+                const distances = this.calculateAllDistances(
+                    tf.concat(centroids, 0) as tf.Tensor2D,
+                    points
+                );
+
+                const minDistances = distances.min(1).square() as tf.Tensor1D;
+                const totalDistance = minDistances.sum().dataSync()[0];
+
+                // Pilih titik berikutnya dengan probabilitas proporsional terhadap jarak kuadrat
+                const probabilities = minDistances.div(totalDistance).dataSync();
+
+                let cumulativeProb = 0;
+                const randomValue = Math.random();
+                let selectedIndex = 0;
+
+                for (let j = 0; j < numPoints; j++) {
+                    cumulativeProb += probabilities[j];
+                    if (cumulativeProb >= randomValue) {
+                        selectedIndex = j;
+                        break;
+                    }
+                }
+
+                centroids.push(points.gather([selectedIndex]));
+            }
+
+            return tf.concat(centroids, 0) as tf.Tensor2D;
+        });
+    }
+
+    // Hitung jarak Euclidean antara centroid dan semua points
     private calculateAllDistances(centroids: tf.Tensor2D, points: tf.Tensor2D): tf.Tensor2D {
         return tf.tidy(() => {
             // points shape: [numPoints, numFeatures]
             // centroids shape: [numCentroids, numFeatures]
 
             // Expand dimensions untuk broadcasting
-            // points: [numPoints, 1, numFeatures]
             const expandedPoints = points.expandDims(1);
-
-            // centroids: [1, numCentroids, numFeatures]
             const expandedCentroids = centroids.expandDims(0);
 
             // Hitung squared differences: [numPoints, numCentroids, numFeatures]
@@ -84,20 +148,38 @@ export class KMeansCalculator {
         });
     }
 
-    // Algoritma K-Means utama yang diperbaiki
-    public performKMeans(data: FoodData[], maxIterations: number = 100): ScaledFoodData[] {
+    // Algoritma K-Means utama yang dapat menggunakan berbagai metode inisialisasi
+    public performKMeans(
+        data: FoodData[],
+        maxIterations: number = 100,
+        initializationMethod: keyof typeof KMeansCalculator.CentroidInitialization = 'CUSTOM'
+    ): ScaledFoodData[] {
         if (data.length === 0) return [];
 
         // Scale data
         const { scaledData, means, stdDevs } = this.scaleData(data);
 
-        // Scale centroid custom
-        const scaledCentroids = this.scaleCustomCentroids(means, stdDevs);
-
         return tf.tidy(() => {
             // Convert to tensors
-            let centroids = tf.tensor2d(scaledCentroids);
             const points = tf.tensor2d(scaledData.map(item => item.scaledValues));
+            const k = Object.keys(this.customCentroids).length;
+
+            let centroids: tf.Tensor2D;
+
+            // Pilih metode inisialisasi centroid
+            switch (initializationMethod) {
+                case 'RANDOM':
+                    centroids = this.initializeRandomCentroids(points, k);
+                    break;
+                case 'KMEANS_PLUS_PLUS':
+                    centroids = this.initializeKMeansPlusPlus(points, k);
+                    break;
+                case 'CUSTOM':
+                default:
+                    const scaledCentroids = this.scaleCustomCentroids(means, stdDevs);
+                    centroids = tf.tensor2d(scaledCentroids);
+                    break;
+            }
 
             let previousAssignments: tf.Tensor1D | null = null;
             let iterations = 0;
@@ -123,7 +205,7 @@ export class KMeansCalculator {
                     // Update centroids
                     const newCentroids: tf.Tensor2D[] = [];
 
-                    for (let i = 0; i < scaledCentroids.length; i++) {
+                    for (let i = 0; i < k; i++) {
                         // Dapatkan indices points yang termasuk dalam cluster ini
                         const clusterIndices: number[] = [];
                         const assignmentsData = assignments.dataSync() as Int32Array;
@@ -170,14 +252,22 @@ export class KMeansCalculator {
             scaledData.forEach((item, index) => {
                 item.clusterResult = {
                     cluster: assignmentsData[index],
-                    distance: distancesData[index]
+                    distance: distancesData[index],
+                    initializationMethod // Simpan metode inisialisasi yang digunakan
                 };
+            });
+
+            // Simpan centroid akhir untuk referensi
+            const finalCentroids = centroids.arraySync() as number[][];
+            scaledData.forEach(item => {
+                item.finalCentroids = finalCentroids;
             });
 
             return scaledData;
         });
     }
-    // Hitung statistik cluster (diperbaiki)
+
+    // Hitung statistik cluster
     public calculateClusterStats(data: ScaledFoodData[]): ClusterStats {
         const stats: ClusterStats = {};
         const clusterNames = ['Pagi', 'Siang', 'Malam'];
@@ -221,5 +311,10 @@ export class KMeansCalculator {
     public getClusterName(clusterNumber: number): string {
         const clusterMap = ['Pagi', 'Siang', 'Malam'];
         return clusterMap[clusterNumber] || 'Unknown';
+    }
+
+    // Get custom centroids (untuk keperluan display)
+    public getCustomCentroids(): Centroids {
+        return this.customCentroids;
     }
 }
