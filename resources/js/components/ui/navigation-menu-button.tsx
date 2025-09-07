@@ -27,7 +27,7 @@ const NavigationButtons = ({
                     className,
                     // Modern UI enhancements
                     'transition-all duration-200 ease-in-out',
-                    'rounded-xl shadow-sm',
+                    ' shadow-sm',
                     isActive
                         ? 'bg-primary text-white shadow-md'
                         : 'bg-transparent text-muted-foreground hover:bg-secondary hover:text-secondary-foreground hover:shadow',
@@ -41,7 +41,7 @@ const NavigationButtons = ({
 };
 
 const sidebarMenuButtonVariants = cva(
-    'flex w-full items-center gap-3 overflow-hidden rounded-xl px-4 py-2 text-left text-base outline-none focus-visible:ring-2 focus-visible:ring-primary/50 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50',
+    'flex w-full items-center gap-3 overflow-hidden px-4 py-2 text-left text-base outline-none focus-visible:ring-2 focus-visible:ring-primary/50 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50',
     {
         variants: {
             variant: {

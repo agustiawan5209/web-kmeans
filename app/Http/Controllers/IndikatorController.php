@@ -20,7 +20,7 @@ class IndikatorController extends Controller
             'href' => '/dashboard',
         ],
         [
-            'title' => 'indikator',
+            'title' => 'kriteria',
             'href' => '/admin/indikator/',
         ],
     ];
@@ -33,16 +33,16 @@ class IndikatorController extends Controller
         return Inertia::render("admin/indikator/index", [
             'indikator' => Indikator::all(),
             'breadcrumb' => self::BASE_BREADCRUMB,
-            'titlePage'=> 'Indikator',
-            'can'=>[
-                'add'=> $user->can('add indikator'),
-                'edit'=> $user->can('edit indikator'),
-                'read'=> $user->can('read indikator'),
-                'delete'=> $user->can('delete indikator'),
+            'titlePage' => 'Indikator',
+            'can' => [
+                'add' => $user->can('add indikator'),
+                'edit' => $user->can('edit indikator'),
+                'read' => $user->can('read indikator'),
+                'delete' => $user->can('delete indikator'),
             ]
         ]);
     }
- private function applyFilters($query, Request $request): void
+    private function applyFilters($query, Request $request): void
     {
         if ($request->filled('q')) {
             $query->searchByName($request->input('q'));
@@ -70,8 +70,8 @@ class IndikatorController extends Controller
         return Inertia::render('admin/indikator/create', [
             'breadcrumb' => array_merge(self::BASE_BREADCRUMB, [
                 [
-                    'title' => 'tambah kategori',
-                    'href' => '/admin/kategori/create',
+                    'title' => 'tambah kriteria',
+                    'href' => '/admin/kriteria/create',
                 ]
             ]),
         ]);
@@ -87,9 +87,9 @@ class IndikatorController extends Controller
             operation: fn() => Indikator::create([
                 'nama' => $request->nama,
                 'keterangan' => $request->keterangan,
-                'attribut'=> $request->attribut,
+                'attribut' => $request->attribut,
             ]),
-            successMessage: 'Kategori Berhasil Ditambahkan!',
+            successMessage: 'kriteria Berhasil Ditambahkan!',
             redirectRoute: 'admin.indikator.index'
         );
     }
@@ -135,11 +135,11 @@ class IndikatorController extends Controller
         $databaseHelper = App::make('databaseHelper');
         return $databaseHelper(
             operation: fn() => $indikator->update([
-                'nama'=> $request->nama,
-                'keterangan'=> $request->keterangan,
-                'attribut'=> $request->attribut,
+                'nama' => $request->nama,
+                'keterangan' => $request->keterangan,
+                'attribut' => $request->attribut,
             ]),
-            successMessage: 'Kategori Berhasil Di Update!',
+            successMessage: 'kriteria Berhasil Di Update!',
             redirectRoute: 'admin.indikator.index'
         );
     }
@@ -152,7 +152,7 @@ class IndikatorController extends Controller
         $databaseHelper = App::make('databaseHelper');
         return $databaseHelper(
             operation: fn() => $indikator->delete(),
-            successMessage: 'Kategori Berhasil Di Hapus!',
+            successMessage: 'kriteria Berhasil Di Hapus!',
             redirectRoute: 'admin.indikator.index'
         );
     }

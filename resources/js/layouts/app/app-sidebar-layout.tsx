@@ -5,7 +5,8 @@ import { Toast } from '@/components/ui/toast';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { SharedData, type BreadcrumbItem } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { Apple, BarChart3, Clock10, Heart, Leaf, Link2Icon } from 'lucide-react';
+import { GearIcon } from '@radix-ui/react-icons';
+import { Apple, BarChart3, ClipboardMinusIcon, Clock10, Heart } from 'lucide-react';
 import { useEffect, useState, type PropsWithChildren } from 'react';
 
 export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
@@ -14,9 +15,9 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWi
     // Ganti ikon sesuai konteks
     const navigationItems = [
         { title: 'Dashboard', href: '/dashboard', icon: BarChart3 },
-        { title: 'Indikator', href: '/admin/indikator', icon: Leaf },
+        { title: 'Kriteria', href: '/admin/indikator', icon: GearIcon },
         { title: 'Data Makanan', href: '/admin/dataset', icon: Apple },
-        { title: 'K-means', href: '/kmeans', icon: Link2Icon },
+        { title: 'K-means', href: '/kmeans', icon: ClipboardMinusIcon },
         { title: 'Riwayat Rekomendasi', href: '/admin/riwayat', icon: Clock10 },
     ];
 
@@ -80,7 +81,7 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWi
                         <Heart className="h-10 w-10 text-pink-600" />
                         <span className="ml-3 text-lg font-extrabold whitespace-normal text-blue-700">Rekomendasi Sehat</span>
                     </div>
-                    <nav className="flex-1 overflow-y-auto px-4 py-6">
+                    <nav className="flex-1 overflow-y-auto py-6">
                         <ul className="space-y-2">
                             {navigationItems.map((item) => {
                                 const Icon = item.icon;
@@ -93,7 +94,7 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWi
                                             variant="default"
                                             href={item.href}
                                             icon={Icon}
-                                            className={`flex w-full items-center rounded-lg px-4 py-3 text-base font-semibold transition-colors ${
+                                            className={`flex w-full items-center px-4 py-3 text-base font-semibold transition-colors ${
                                                 isActive
                                                     ? 'bg-orange-100 text-orange-700 shadow-md'
                                                     : 'text-gray-700 hover:bg-blue-100 hover:text-blue-700'
