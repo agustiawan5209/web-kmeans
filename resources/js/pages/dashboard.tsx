@@ -22,7 +22,7 @@ export default function Dashboard({ baseJenisRumputLaut, totalDataMakanan, indik
     const stats = [
         { title: 'Total Data Makanan', value: totalDataMakanan, icon: <Database size={24} /> },
         // { title: 'Model Tersedia', value: '4', icon: <Leaf size={24} /> },
-        { title: 'Total Indikator', value: indikator, icon: <TrendingUp size={24} />, change: '+2%' },
+        { title: 'Total Kriteria', value: indikator, icon: <TrendingUp size={24} />, change: '+2%' },
     ];
 
     const [prediction, setPrediction] = useState<{
