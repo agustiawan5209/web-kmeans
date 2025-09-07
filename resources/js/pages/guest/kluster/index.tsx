@@ -37,20 +37,17 @@ export default function KlusterView({}: KlusterViewProps) {
     const {
         data: formData,
         setData: setFormData,
-        get,
         post,
-        errors,
-        processing,
     } = useForm<FormData>({
-        nama: 'ahmad',
-        jenkel: 'Laki-laki',
-        usia: '25',
-        beratBadan: '60',
-        tinggiBadan: '168',
-        tekananSistolik: '120',
-        tekananDiastolik: '85',
-        riwayatPenyakit: 'Tidak ada',
-        alergiMakanan: 'Tdak ada',
+        nama: '',
+        jenkel: '',
+        usia: '',
+        beratBadan: '',
+        tinggiBadan: '',
+        tekananSistolik: '',
+        tekananDiastolik: '',
+        riwayatPenyakit: '',
+        alergiMakanan: '',
         hipertensi: '',
     });
 
@@ -324,6 +321,7 @@ export default function KlusterView({}: KlusterViewProps) {
                                         value={formData.riwayatPenyakit}
                                         onChange={handleChange}
                                         rows={3}
+                                        required
                                         className="w-full rounded-lg border border-gray-300 px-4 py-2.5 transition duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500"
                                         placeholder="Masukkan riwayat penyakit yang pernah diderita (jika ada)"
                                     />
@@ -340,6 +338,7 @@ export default function KlusterView({}: KlusterViewProps) {
                                         value={formData.alergiMakanan}
                                         onChange={handleChange}
                                         rows={3}
+                                        required
                                         className="w-full rounded-lg border border-gray-300 px-4 py-2.5 transition duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500"
                                         placeholder="Masukkan makanan yang menyebabkan alergi (jika ada)"
                                     />

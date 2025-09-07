@@ -71,7 +71,8 @@ export default function HealthDataView({ kluster }: { kluster: ScaledFoodData[] 
             const savedData = localStorage.getItem('klusterData');
 
             if (savedData) {
-                const parsedData = JSON.parse(savedData);
+                const parsedData: FormData = JSON.parse(savedData);
+                setHealthData(parsedData);
             } else {
                 setHealthData({
                     nama: 'ahmad',
