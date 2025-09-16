@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('riwayat_penggunas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->json('kluster')->comment('menyimpan hasil kluster');
+            $table->json('kluster')->comment('menyimpan hasil kluster')->nullable();
             $table->string('nama', 100);
             $table->string('jenkel', 100);
             $table->string('usia', 100);

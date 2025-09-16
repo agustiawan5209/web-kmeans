@@ -1,21 +1,9 @@
-import KlusterFood from '@/components/klusterFood';
+import KlusterTable from '@/components/kluster-table';
 import MainLayout from '@/layouts/guest/main-layout';
-import { ResultFoodData, ScaledFoodData } from '@/types';
+import { ResultFoodData, RiwayatPenggunaTypes, ScaledFoodData } from '@/types';
+import { Head } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-
-interface FormData {
-    nama: string;
-    jenkel: string;
-    usia: string;
-    berat_badan: string;
-    tinggi_badan: string;
-    tekanan_sistolik: string;
-    tekanan_diastolik: string;
-    riwayat_penyakit: string;
-    alergi_makanan: string;
-    hipertensi: string;
-}
 
 interface HypertensionClassification {
     type: string;
@@ -23,12 +11,12 @@ interface HypertensionClassification {
     bgColor: string;
 }
 
-export default function HealthDataView({ healthData, kluster }: { healthData: FormData[]; kluster: ScaledFoodData[] }) {
+export default function HealthDataView({ healthData, kluster }: { healthData: RiwayatPenggunaTypes[]; kluster: ScaledFoodData[] }) {
     const clusterNames = ['Pagi', 'Siang', 'Malam'];
     const dataMakanan: ResultFoodData[] = kluster.map((item) => {
         return { ...item, clusterResult: clusterNames[item.clusterResult?.cluster || 0] };
     });
-    const [selectedData, setSelectedData] = useState<FormData | null>(null);
+    const [selectedData, setSelectedData] = useState<RiwayatPenggunaTypes | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     console.log(healthData);
 
@@ -129,6 +117,7 @@ export default function HealthDataView({ healthData, kluster }: { healthData: Fo
 
     return (
         <MainLayout>
+            <Head title="Data Kesehatan Pengguna" />
             <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
                 <div className="container mx-auto max-w-6xl px-4">
                     <motion.div
@@ -205,14 +194,14 @@ export default function HealthDataView({ healthData, kluster }: { healthData: Fo
                                                         ).color
                                                     }`}
                                                 >
-                                                    {selectedData.hipertensi}
+                                                    Tingkatan Jenis Hipertensi: {selectedData.hipertensi}
                                                 </motion.span>
                                             )}
                                         </div>
 
                                         {selectedData.berat_badan && selectedData.tinggi_badan && (
                                             <div>
-                                                <h3 className="mb-1 text-sm font-medium text-gray-500">Indeks Massa Tubuh (BMI)</h3>
+                                                <h3 className="mb-1 text-sm font-medium text-gray-500">Indeks Massa Tubuh (IMT)</h3>
                                                 {calculateBMI(
                                                     parseFloat(selectedData.berat_badan) || 0,
                                                     parseFloat(selectedData.tinggi_badan) || 0,
@@ -257,7 +246,7 @@ export default function HealthDataView({ healthData, kluster }: { healthData: Fo
                                         </div>
                                     </div>
                                 </div>
-                                <KlusterFood data={dataMakanan} />
+                                <KlusterTable data={selectedData.kluster} />
                             </div>
                         </motion.div>
                     ) : (

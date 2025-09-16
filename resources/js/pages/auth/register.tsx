@@ -70,21 +70,6 @@ export default function Register() {
                         />
                         <InputError message={errors.email} />
                     </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="alamat">Alamat Lengkap</Label>
-                        <Input
-                            id="alamat"
-                            type="text"
-                            required
-                            tabIndex={2}
-                            autoComplete="alamat"
-                            value={data.alamat}
-                            onChange={(e) => setData('alamat', e.target.value)}
-                            disabled={processing}
-                            placeholder="alamat............"
-                        />
-                        <InputError message={errors.alamat} />
-                    </div>
 
                     <div className="grid gap-2">
                         <Label htmlFor="password">Password</Label>
@@ -125,9 +110,9 @@ export default function Register() {
                 </div>
 
                 <div className="text-center text-sm text-muted-foreground">
-                   Sudah Punya Akun?{' '}
+                    Sudah Punya Akun?{' '}
                     <TextLink href={route('login')} tabIndex={6}>
-                       Masuk
+                        Masuk
                     </TextLink>
                 </div>
             </form>

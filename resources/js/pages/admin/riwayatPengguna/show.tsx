@@ -1,5 +1,6 @@
+import KlusterTable from '@/components/kluster-table';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, IndikatorTypes } from '@/types';
+import { BreadcrumbItem, IndikatorTypes, ResultFoodData } from '@/types';
 import { Head } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { useMemo } from 'react';
@@ -32,6 +33,11 @@ interface HarvestDetailProps {
         riwayat_penyakit: string;
         alergi_makanan: string;
         hipertensi: string;
+        kluster?: {
+            pagi: ResultFoodData[];
+            siang: ResultFoodData[];
+            malam: ResultFoodData[];
+        };
     };
     breadcrumb: BreadcrumbItem[];
     indikator: IndikatorTypes[];
@@ -87,7 +93,7 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
 
         return { value: parseFloat(bmi.toFixed(1)), category, color };
     };
-
+    console.log(riwayatPengguna.kluster);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={titlePage ?? 'Detail'} />
@@ -115,10 +121,6 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
                                 <div className="flex justify-between py-1">
                                     <span className="text-sm text-gray-600">Email </span>
                                     <span className="text-sm font-medium">{riwayatPengguna.user.email}</span>
-                                </div>
-                                <div className="flex justify-between py-1">
-                                    <span className="text-sm text-gray-600">Alamat </span>
-                                    <span className="text-sm font-medium">{riwayatPengguna.user.alamat}</span>
                                 </div>
                             </div>
                         </div>
@@ -183,7 +185,7 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
                                                     ).color
                                                 }`}
                                             >
-                                                {riwayatPengguna.hipertensi}
+                                                Tingkatan Jenis Hipertensi: {riwayatPengguna.hipertensi}
                                             </motion.span>
                                         )}
                                     </div>
@@ -236,6 +238,9 @@ export default function HarvestDetailPage({ riwayatPengguna, breadcrumb, indikat
                                 </div>
                             </div>
                         </div>
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                            <KlusterTable data={riwayatPengguna.kluster} />
+                        </motion.div>
                     </motion.div>
                 </div>
             </motion.div>

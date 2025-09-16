@@ -1,9 +1,9 @@
-import KlusterFood from '@/components/klusterFood';
+import KlusterTable from '@/components/kluster-table';
 import MainLayout from '@/layouts/guest/main-layout';
-import { ResultFoodData, ScaledFoodData } from '@/types';
+import { ResultFoodData, RiwayatPenggunaTypes, ScaledFoodData } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface FormData {
     nama: string;
@@ -36,11 +36,13 @@ interface HypertensionClassification {
     bgColor: string;
 }
 
-export default function HealthDataView({ kluster }: { kluster: ScaledFoodData[] }) {
+export default function HealthDataView({ kluster, riwayatPengguna }: { kluster: ScaledFoodData[]; riwayatPengguna: RiwayatPenggunaTypes }) {
     const clusterNames = ['Pagi', 'Siang', 'Malam'];
-    const dataMakanan: ResultFoodData[] = kluster.map((item) => {
-        return { ...item, clusterResult: clusterNames[item.clusterResult?.cluster || 0] };
-    });
+    const dataMakanan: {
+        pagi: ResultFoodData[];
+        siang: ResultFoodData[];
+        malam: ResultFoodData[];
+    } = riwayatPengguna.kluster || { pagi: [], siang: [], malam: [] };
     const {
         data: healthData,
         setData: setHealthData,
@@ -48,63 +50,19 @@ export default function HealthDataView({ kluster }: { kluster: ScaledFoodData[] 
         errors,
         processing,
     } = useForm<KlusterData>({
-        nama: 'ahmad',
-        jenkel: 'Laki-laki',
-        usia: '25',
-        beratBadan: '60',
-        tinggiBadan: '168',
-        tekananSistolik: '120',
-        tekananDiastolik: '85',
-        riwayatPenyakit: 'Tidak ada',
-        alergiMakanan: 'Tdak ada',
-        hipertensi: '',
+        nama: riwayatPengguna.nama || '',
+        jenkel: riwayatPengguna.jenkel || '',
+        usia: riwayatPengguna.usia || '',
+        beratBadan: riwayatPengguna.berat_badan || '',
+        tinggiBadan: riwayatPengguna.tinggi_badan || '',
+        tekananSistolik: riwayatPengguna.tekanan_sistolik || '',
+        tekananDiastolik: riwayatPengguna.tekanan_diastolik || '',
+        riwayatPenyakit: riwayatPengguna.riwayat_penyakit || '',
+        alergiMakanan: riwayatPengguna.alergi_makanan || '',
+        hipertensi: riwayatPengguna.hipertensi || '',
     });
     const [selectedData, setSelectedData] = useState<FormData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        loadDataFromLocalStorage();
-    }, []);
-
-    const loadDataFromLocalStorage = () => {
-        try {
-            const savedData = localStorage.getItem('klusterData');
-
-            if (savedData) {
-                const parsedData: FormData = JSON.parse(savedData);
-                setHealthData(parsedData);
-            } else {
-                setHealthData({
-                    nama: 'ahmad',
-                    jenkel: 'Laki-laki',
-                    usia: '25',
-                    beratBadan: '60',
-                    tinggiBadan: '168',
-                    tekananSistolik: '120',
-                    tekananDiastolik: '85',
-                    riwayatPenyakit: 'Tidak ada',
-                    alergiMakanan: 'Tdak ada',
-                    hipertensi: '',
-                });
-            }
-        } catch (error) {
-            console.error('Error parsing data from localStorage:', error);
-            setHealthData({
-                nama: 'ahmad',
-                jenkel: 'Laki-laki',
-                usia: '25',
-                beratBadan: '60',
-                tinggiBadan: '168',
-                tekananSistolik: '120',
-                tekananDiastolik: '85',
-                riwayatPenyakit: 'Tidak ada',
-                alergiMakanan: 'Tdak ada',
-                hipertensi: '',
-            });
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     const classifyHypertension = (sistolik: number, diastolik: number): HypertensionClassification => {
         if (sistolik >= 180 && diastolik >= 120) {
@@ -213,6 +171,7 @@ export default function HealthDataView({ kluster }: { kluster: ScaledFoodData[] 
                                                     ).color
                                                 }`}
                                             >
+                                                Tingkatan Jenis Hipertensi :{' '}
                                                 {
                                                     classifyHypertension(
                                                         parseInt(healthData.tekananSistolik) || 0,
@@ -225,7 +184,7 @@ export default function HealthDataView({ kluster }: { kluster: ScaledFoodData[] 
 
                                     {healthData.beratBadan && healthData.tinggiBadan && (
                                         <div>
-                                            <h3 className="mb-1 text-sm font-medium text-gray-500">Indeks Massa Tubuh (BMI)</h3>
+                                            <h3 className="mb-1 text-sm font-medium text-gray-500">Indeks Massa Tubuh (IMT)</h3>
                                             {calculateBMI(parseFloat(healthData.beratBadan) || 0, parseFloat(healthData.tinggiBadan) || 0) && (
                                                 <>
                                                     <p className="text-lg font-semibold">
@@ -273,7 +232,7 @@ export default function HealthDataView({ kluster }: { kluster: ScaledFoodData[] 
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg">
                             <h3 className="mb-6 text-xl font-semibold text-gray-900">Tabel Data Makanan</h3>
-                            <KlusterFood data={dataMakanan} />
+                            <KlusterTable data={dataMakanan} />
                         </div>
                     </motion.div>
                 </div>

@@ -107,3 +107,22 @@ export interface ClusterStats {
         averages: Partial<FoodData>;
     };
 }
+
+export interface RiwayatPenggunaTypes {
+    id: number;
+    nama: string;
+    jenkel: string;
+    usia: string;
+    berat_badan: string;
+    tinggi_badan: string;
+    tekanan_sistolik: string;
+    tekanan_diastolik: string;
+    riwayat_penyakit: string;
+    alergi_makanan: string;
+    hipertensi: string;
+    kluster?: {
+        pagi: ResultFoodData[];
+        siang: ResultFoodData[];
+        malam: ResultFoodData[];
+    };
+}

@@ -1,9 +1,12 @@
 import MainLayout from '@/layouts/guest/main-layout';
+import { ResultFoodData, ScaledFoodData } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-interface KlusterViewProps {}
+interface KlusterViewProps {
+    kluster: ScaledFoodData[];
+}
 
 type FormData = {
     nama: string;
@@ -16,6 +19,11 @@ type FormData = {
     riwayatPenyakit: string;
     alergiMakanan: string;
     hipertensi?: string;
+    kluster?: {
+        pagi: ResultFoodData[];
+        siang: ResultFoodData[];
+        malam: ResultFoodData[];
+    };
 };
 
 interface HypertensionClassification {
@@ -33,7 +41,46 @@ const hypertensionClassifications: HypertensionClassification[] = [
     { type: 'Hipertensi Krisis', sistolik: '≥180', diastolik: '≥120', color: 'bg-red-100 text-red-800' },
 ];
 
-export default function KlusterView({}: KlusterViewProps) {
+export default function KlusterView({ kluster }: KlusterViewProps) {
+    const [sortField, setSortField] = useState<keyof ResultFoodData>('MENU');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+    const clusterNames = ['Pagi', 'Siang', 'Malam'];
+    const dataMakanan: ResultFoodData[] = kluster.map((item) => {
+        return { ...item, clusterResult: clusterNames[item.clusterResult?.cluster || 0] };
+    });
+    // Memisahkan data berdasarkan cluster
+    const pagiData = dataMakanan.filter((item) => item.clusterResult === 'Pagi');
+    const siangData = dataMakanan.filter((item) => item.clusterResult === 'Siang');
+    const malamData = dataMakanan.filter((item) => item.clusterResult === 'Malam');
+
+    function shuffleArray(array: any) {
+        let currentIndex = array.length,
+            randomIndex;
+
+        // Selama masih ada elemen untuk diacak.
+        while (currentIndex != 0) {
+            // Pilih elemen yang tersisa secara acak.
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            // Dan tukar dengan elemen saat ini.
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
+    }
+
+    const klusterResult = () => {
+        const shuffledPagiData = shuffleArray(pagiData).slice(0, 5);
+        const shuffledSiangData = shuffleArray(siangData).slice(0, 5);
+        const shuffledMalamData = shuffleArray(malamData).slice(0, 5);
+        return {
+            pagi: shuffledPagiData,
+            siang: shuffledSiangData,
+            malam: shuffledMalamData,
+        };
+    };
     const {
         data: formData,
         setData: setFormData,
@@ -49,6 +96,7 @@ export default function KlusterView({}: KlusterViewProps) {
         riwayatPenyakit: '',
         alergiMakanan: '',
         hipertensi: '',
+        kluster: klusterResult(),
     });
 
     const [currentClassification, setCurrentClassification] = useState<HypertensionClassification | null>(null);
@@ -323,7 +371,9 @@ export default function KlusterView({}: KlusterViewProps) {
                                         rows={3}
                                         required
                                         className="w-full rounded-lg border border-gray-300 px-4 py-2.5 transition duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Masukkan riwayat penyakit yang pernah diderita (jika ada)"
+                                        placeholder="Jelaskan riwayat penyakit yang pernah Anda alami.
+Tuliskan nama penyakit (misalnya: Diabetes tipe 2)
+Sertakan tahun diagnosa (misalnya: 2018)"
                                     />
                                 </div>
 
@@ -340,7 +390,10 @@ export default function KlusterView({}: KlusterViewProps) {
                                         rows={3}
                                         required
                                         className="w-full rounded-lg border border-gray-300 px-4 py-2.5 transition duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Masukkan makanan yang menyebabkan alergi (jika ada)"
+                                        placeholder="Sebutkan semua alergi makanan yang Anda miliki.
+Nama makanan (contoh: Udang)
+Gejala yang timbul (contoh: Gatal-gatal, sesak napas)
+Tingkat keparahan (contoh: ringan, parah)"
                                     />
                                 </div>
                             </motion.div>

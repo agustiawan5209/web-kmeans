@@ -40,11 +40,12 @@ class RiwayatPenggunaController extends Controller
         $request->validate([
             "nama" => "required",
             "jenkel" => "required",
+            "kluster" => "required",
         ]);
         RiwayatPengguna::create([
             "user_id" => Auth::user()->id,
             "user" => Auth::user(),
-            // "kluster" => $request->kluster,
+            "kluster" => $request->kluster,
             "nama" => $request->nama,
             "jenkel" => $request->jenkel,
             "usia" => $request->usia,

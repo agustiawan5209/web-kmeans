@@ -10,7 +10,7 @@ class RiwayatPengguna extends Model
     protected $table = "riwayat_penggunas";
     protected $fillable = [
         'user_id',
-        // 'kluster',
+        'kluster',
         'nama',
         'jenkel',
         'usia',
@@ -24,7 +24,7 @@ class RiwayatPengguna extends Model
     ];
 
     protected $casts = [
-        // 'kluster' => 'json',
+        'kluster' => 'array',
         'created_at' => 'datetime'
     ];
 
