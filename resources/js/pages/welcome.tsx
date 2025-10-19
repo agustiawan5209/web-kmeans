@@ -98,17 +98,6 @@ const Home = () => {
                                     alt="Makanan sehat untuk penderita hipertensi"
                                     className="h-96 w-full rounded-2xl object-cover shadow-2xl"
                                 />
-                                <div className="absolute -bottom-5 -left-5 rounded-xl bg-white p-4 shadow-lg">
-                                    <div className="flex items-center">
-                                        <div className="mr-3 rounded-full bg-green-100 p-2">
-                                            <Salad className="h-6 w-6 text-green-600" />
-                                        </div>
-                                        <div>
-                                            <p className="font-semibold">100+ Makanan</p>
-                                            <p className="text-sm text-gray-500">Rendah sodium & sehat</p>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </motion.div>
                     </div>
